@@ -1,0 +1,104 @@
+{
+  "lexicon": 1,
+  "id": "one.atpage.page",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "required": ["links", "services"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "title of the atpage"
+          },
+          "description": {
+            "type": "string",
+            "description": "description of the atpage"
+          },
+          "style": {
+            "type": "string",
+            "description": "customized style of the atpage"
+          },
+          "services": {
+            "type": "array",
+            "description": "Record containing a list of atproto service to display",
+            "items": {
+              "type": "string",
+              "description": "name of at service"
+            }
+          },
+          "links": {
+            "type": "array",
+            "description": "Record containing a list of links to display (TODO)",
+            "items": {
+              "type": "ref",
+              "ref": "#link"
+            }
+          },
+          "follows": {
+            "type": "array",
+            "description": "Record containing a list of follows to display (TODO)",
+            "items": {
+              "type": "ref",
+              "ref": "#follow"
+            }
+          }
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "description": "Represents a single link to display",
+      "required": [
+        "url",
+        "name",
+        "order"
+      ],
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "order": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string",
+          "description": "URL of the icon"
+        },
+        "style": {
+          "type": "string",
+          "description": "style of link: bgColor, bgImage, textColor, ..."
+        },
+        "createdAt": {
+          "type": "integer",
+          "format": "timestamp(sec)"
+        }
+      }
+    },
+    "follow": {
+      "type": "object",
+      "description": "Represents a single follow to display",
+      "required": [
+        "did",
+        "createdAt"
+      ],
+      "properties": {
+        "did": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "integer",
+          "format": "timestamp(sec)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+
+[package]
+name = "atpage"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+codegen-units = 1
+opt-level = "z"
+panic = "abort"
+lto = true
+strip = true 
+
+#[dev-dependencies]
+#console_error_panic_hook = { workspace = true }
+
+[dependencies]
+leptos = { version = "0.7.8", features = ["csr"] }
+leptos_meta = "0.7.8"
+leptos_router = "0.7.8"
+leptos-use = "0.15.7"
+phosphor-leptos = "0.7.0"
+
+itertools = "0.14.0"
+chrono = "0.4.41"
+wasm-bindgen = "0.2.100"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+futures = "0.3.31"
+reqwest = { version = "0.12.15", features = ["json"] }
+codee = { version = "0.3.0", features = ["prost", "json_serde"] }
+
+slug = "0.1.6"
+latex2mathml = "0.2.3"
+
+[dependencies.pulldown-cmark]
+version = "0.13.0"
+default-features = false 
+features = ["simd", "html"]
+
+[dependencies.gloo]
+version = "0.11.0"
+features = ["futures"]

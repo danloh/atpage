@@ -1,0 +1,11 @@
+target/
+.idea/
+dist/
+node_modules/
+package-lock.json
+.vscode/
+.cargo
+devlog.md
+src/env.rs
+.env
+asset/main.css
