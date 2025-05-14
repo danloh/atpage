@@ -199,7 +199,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			}
 			<a 
 			  class="link link-hover text-success text-xs" 
-			  href="https://github.com/danloh/atpage" 
+			  href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
 				target="_blank"
 			>
 				"Want more services available? submit here."
