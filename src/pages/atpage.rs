@@ -122,8 +122,8 @@ fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 				</span>
 				<a 
 					href={rec.link.clone()} 
-					class="link link-hover text-xs at-rec-meta-kind"     
-					target="_blank"
+					class={format!("link link-hover text-xs at-rec-meta-kind at-kd-{}", rec.kind)}    
+					target="_blank" 
 				>
 					{format!("@{}", rec.kind)}
 				</a>
