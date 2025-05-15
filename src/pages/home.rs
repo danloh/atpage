@@ -56,9 +56,10 @@ pub fn Home() -> impl IntoView {
 }
 
 /// (name, category, domain)
-pub const AT_SERVICES: [(&str, &str, &str); 2] = [
-	("frontpage", "Links", "frontpage.fyi"),
-	("whitewind", "Blog", "whtwnd.com"), 
+pub const AT_SERVICES: [(&str, &str, &str); 3] = [
+	("frontpage", "Links", "https://frontpage.fyi"),
+	("whitewind", "Blog", "https://whtwnd.com"), 
+	("pinksea", "Oekaki", "https://pinksea.art"), 
 ];
 
 /// endpoint `/setup`
@@ -191,7 +192,9 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 									}
 								}
 							/>
-							<label for={t.0}>{format!("{}: {} - {}", t.0, t.1, t.2)}</label>
+							<label for={t.0}>
+							  {format!("{}: {} - ", t.0, t.1)}<a href={t.2} target="_blank">{t.2}</a>
+							</label>
 						</div>
 					}
 				})

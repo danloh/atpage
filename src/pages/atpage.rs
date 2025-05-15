@@ -109,36 +109,46 @@ pub fn AtBox(
 
 #[component]
 fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
+	let kd = rec.kind;
+
 	view! { 
-		<div class="w-full p-2 at-rec">
-			<div class="flex items-center justify-start gap-2 at-rec-meta">
+		<div class={format!("w-full p-2 at-card at-card-{}", kd)}>
+			<div class={format!("flex items-center justify-start gap-2 at-meta at-meta-{}", kd)}>
 				<img 
-					class="h-4 w-4 rounded at-rec-meta-ava" 
+					class={format!("h-4 w-4 rounded at-ava at-ava-{}", kd)}  
 					src={profile.get().avatar.clone().unwrap_or_default()} 
 					loading="lazy" 
 				/>
-				<span class="text-xs at-rec-meta-date">
+				<span class={format!("text-xs at-date at-date-{}", kd)}>
 					{ts_to_dt(rec.timestamp / 1000)}
 				</span>
 				<a 
 					href={rec.link.clone()} 
-					class={format!("link link-hover text-xs at-rec-meta-kind at-kd-{}", rec.kind)}    
+					class={format!("link link-hover text-xs at-kind at-kind-{}", kd)}    
 					target="_blank" 
 				>
-					{format!("@{}", rec.kind)}
+					{format!("@{}", kd)}
 				</a>
 			</div>
-			<div class="flex items-center justify-start gap-2 at-rec-title">
+			<div class={format!("flex items-center justify-start gap-2 at-title at-tt-{}", kd)}>
 				<a 
 					href={rec.link} 
 					target="_blank" 
-					class="font-bold text-xl link link-hover at-rec-title-link"
+					class={format!("font-bold text-xl link link-hover at-title-link at-tl-{}", kd)} 
 				>
 					{rec.title}
 				</a>
 			</div>
+			<div class={format!("w-full flex flex-wrap items-center justify-center gap-2 at-images at-images-{}", kd)}>
+				{
+					rec.images.into_iter().map(|img| view! { 
+						<img class="max-w-full at-image" src={img} loading="lazy" /> 
+					})
+					.collect_view()
+				}
+			</div>
 			<div 
-				class="flex-1 prose no-scrollbar at-rec-ctn" 
+				class={format!("flex-1 prose no-scrollbar at-ctn at-ctn-{}", kd)} 
 				style="max-height: 240px; overflow: auto" 
 				inner_html={md2html(&rec.content).html} 
 			></div> 
@@ -149,16 +159,16 @@ fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 #[component]
 pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 	view! {
-		<div class="flex flex-wrap items-center justify-center gap-2 at-prf">
+		<div class="flex flex-wrap items-center justify-center gap-2 at-profile">
 			<img 
-				class="h-8 w-8 rounded-full at-prf-img" 
+				class="h-8 w-8 rounded-full at-avatar" 
 				src={profile.avatar.clone().unwrap_or_default()} 
 				loading="lazy" 
 			/>
 			<a 
 				href={format!("https://bsky.app/profile/{}", profile.handle.clone())} 
 				target="_blank" 
-				class="link link-hover text-2xl at-prf-handle"
+				class="link link-hover text-2xl at-handle"
 			>
 				{
 					profile.displayName.clone().map(|n| {
