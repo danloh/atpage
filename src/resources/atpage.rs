@@ -22,7 +22,6 @@ pub struct AtPageResp {
 
 /// for record links
 #[derive(Clone, Default, Serialize, Deserialize, Debug)]
-#[allow(non_snake_case)]
 pub struct AtPageValue {
 	#[serde(rename = "$type")]
   pub kind: String,

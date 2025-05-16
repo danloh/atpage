@@ -32,7 +32,6 @@ pub struct PinkSeaValue {
 }
 
 #[derive(Clone, Default, Serialize, Deserialize)]
-#[allow(non_snake_case)]
 pub struct PinkSeaBlob {
 	#[serde(rename = "$type")]
   pub kind: String,
@@ -41,7 +40,6 @@ pub struct PinkSeaBlob {
 }
 
 #[derive(Clone, Default, Serialize, Deserialize)]
-#[allow(non_snake_case)]
 pub struct PinkSeaBlobLink {
 	#[serde(rename = "$link")]
   pub link: String,
