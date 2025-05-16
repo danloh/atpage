@@ -9,3 +9,4 @@ devlog.md
 src/env.rs
 .env
 asset/main.css
+src/pages/test_page.rs

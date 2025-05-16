@@ -7,6 +7,7 @@ use leptos::prelude::*;
 use leptos_meta::provide_meta_context;
 use leptos_router::{components::{Route, Router, Routes}, path};
 use pages::{atpage::AtPage, auth::LogIn, home::{Home, SetupPage}};
+// use pages::test_page::TestAtPage;
 
 pub fn toast(text: String) {
   use_context::<Callback<String, ()>>()
@@ -40,6 +41,7 @@ fn App() -> impl IntoView {
 				<Route path=path!("/login") view=move || view! { <LogIn /> } />
 				<Route path=path!("/setup") view=move || view! { <SetupPage /> } />
 				<Route path=path!("/:handle") view=move || view! { <AtPage /> } />
+				// <Route path=path!("/test/:did") view=move || view! { <TestAtPage /> } />
 			</Routes>
 			<div id="toast" class:show=show_toast>
 				{toast_text}

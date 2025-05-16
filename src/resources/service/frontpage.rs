@@ -5,14 +5,12 @@ use crate::{
   resources::{atpage::AtRecord, record::{list_record, uri_parts}}
 };
 
-/// frontpage: link share
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct FrontpageListResp {
   pub records: Vec<FrontpageResp>,
   pub cursor: Option<String>,
 }
 
-/// for record frontpage: link share
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct FrontpageResp {
   pub uri: String,
@@ -20,7 +18,6 @@ pub struct FrontpageResp {
   pub value: FrontpageValue,
 }
 
-/// for record frontpage.fyi
 #[derive(Clone, Default, Serialize, Deserialize)]
 #[allow(non_snake_case)]
 pub struct FrontpageValue {
@@ -60,12 +57,14 @@ pub async fn get_frontpage_records(
 
 					return (recs, cursor); 
         }
-				Err(_e) => {
+				Err(e) => {
+          gloo::console::log!("get frontpage records error: ", format!("{:?}", e));
 				  return (Default::default(), None);
 				}
 			}
 		}
-	  Err(_e) => {
+	  Err(e) => {
+      gloo::console::log!("get frontpage records error: ", format!("{:?}", e));
 			return (Default::default(), None);
 		}
 	}

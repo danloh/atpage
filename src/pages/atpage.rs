@@ -108,7 +108,7 @@ pub fn AtBox(
 }
 
 #[component]
-fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
+pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 	let kd = rec.kind;
 
 	view! { 
@@ -142,7 +142,7 @@ fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 			<div class={format!("w-full flex flex-wrap items-center justify-center gap-2 at-images at-images-{}", kd)}>
 				{
 					rec.images.into_iter().map(|img| view! { 
-						<img class="max-w-full at-image" src={img} loading="lazy" /> 
+						<img class="max-w-full p-2 at-image" src={img} loading="lazy" /> 
 					})
 					.collect_view()
 				}

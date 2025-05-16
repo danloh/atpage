@@ -215,7 +215,7 @@ pub async fn resolve_did(did: &str) ->  ResolveDid {
 }
 
 /// the typed return of `getProfile` as per atproto api
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Default)]
 #[allow(non_snake_case)]
 pub struct ProfileRes {
   pub did: String, 

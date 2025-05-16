@@ -5,14 +5,12 @@ use crate::{
   resources::{atpage::AtRecord, record::{list_record, uri_parts}}
 };
 
-/// whitewind: blog service
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct WndListResp {
   pub records: Vec<WndResp>,
   pub cursor: Option<String>,
 }
 
-/// for record blog entry
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct WndResp {
   pub uri: String,
@@ -20,7 +18,6 @@ pub struct WndResp {
   pub value: WndValue,
 }
 
-/// for record blog entry
 #[derive(Clone, Default, Serialize, Deserialize)]
 #[allow(non_snake_case)]
 pub struct WndValue {
@@ -61,12 +58,14 @@ pub async fn get_wnd_records(
 
 					return (recs, cursor); 
         }
-				Err(_e) => {
+				Err(e) => {
+          gloo::console::log!("get whitewind records error: ", format!("{:?}", e));
 				  return (Default::default(), None);
 				}
 			}
 		}
-	  Err(_e) => {
+	  Err(e) => {
+      gloo::console::log!("get whitewind records error: ", format!("{:?}", e));
 			return (Default::default(), None);
 		}
 	}

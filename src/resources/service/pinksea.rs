@@ -5,14 +5,12 @@ use crate::{
   resources::{atpage::AtRecord, record::{list_record, uri_parts}}
 };
 
-/// frontpage: link share
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct PinkSeaListResp {
   pub records: Vec<PinkSeaResp>,
   pub cursor: Option<String>,
 }
 
-/// for record frontpage: link share
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct PinkSeaResp {
   pub uri: String,
@@ -20,22 +18,24 @@ pub struct PinkSeaResp {
   pub value: PinkSeaValue,
 }
 
-/// for record frontpage.fyi
 #[derive(Clone, Default, Serialize, Deserialize)]
 #[allow(non_snake_case)]
 pub struct PinkSeaValue {
 	#[serde(rename = "$type")]
   pub kind: String,
-  pub image: PinkSeaBlob,
+  pub image: PinkSeaImage,
   pub nsfw: bool,
   pub createdAt: String,
 }
 
 #[derive(Clone, Default, Serialize, Deserialize)]
+pub struct PinkSeaImage {
+  pub blob: PinkSeaBlob,
+}
+
+#[derive(Clone, Default, Serialize, Deserialize)]
 pub struct PinkSeaBlob {
-	#[serde(rename = "$type")]
-  pub kind: String,
-  #[serde(rename = "$ref")]
+  #[serde(rename = "ref")]
   pub linkref: PinkSeaBlobLink,
 }
 
@@ -51,6 +51,7 @@ pub async fn get_pinksea_records(
 ) -> (Vec<AtRecord>, Option<String>) {
 	match list_record("com.shinolabs.pinksea.oekaki", service, &did, cur).await {
 		Ok(raw_data) => {
+      gloo::console::log!("pinksea records: ", format!("{:?}", raw_data));
 			match serde_json::from_str::<PinkSeaListResp>(&raw_data) {
 				Ok(data_res) => {
           let cursor = data_res.cursor;
@@ -63,7 +64,7 @@ pub async fn get_pinksea_records(
             let value = entry.value;
             let img_link = format!(
               "https://harbor.pinksea.art/{did}/{}", 
-              value.image.linkref.link
+              value.image.blob.linkref.link
             );
             let rec = AtRecord {
               kind: String::from("pinksea"),
@@ -76,14 +77,18 @@ pub async fn get_pinksea_records(
             recs.push(rec);
           }
 
+          gloo::console::log!("pinksea res: ", format!("{:?}", recs));
+
 					return (recs, cursor); 
         }
-				Err(_e) => {
+				Err(e) => {
+          gloo::console::log!("get pinksea records error: ", format!("{:?}", e));
 				  return (Default::default(), None);
 				}
 			}
 		}
-	  Err(_e) => {
+	  Err(e) => {
+      gloo::console::log!("get pinksea records error: ", format!("{:?}", e));
 			return (Default::default(), None);
 		}
 	}

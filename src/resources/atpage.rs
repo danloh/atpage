@@ -113,7 +113,7 @@ pub async fn put_atpage_record(
 // ===========  Service Record =======================================================
 // ===================================================================================
 
-#[derive(Clone, Default, Serialize, Deserialize)]
+#[derive(Clone, Default, Serialize, Deserialize, Debug)]
 pub struct AtRecord {
   pub kind: String,
   pub title: String,
