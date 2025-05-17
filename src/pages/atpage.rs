@@ -52,25 +52,36 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 		<Suspense fallback=move || "Loading">
 			{move || match atpage.get() {
 				Some(res) => {
-					let res = res.as_ref().cloned().unwrap_or_default();
-					view! {
-						<Style>{res.style.unwrap_or_default()}</Style>
-						<div class="min-h-screen w-screen at-screen">
-							<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
-								<ProfileView profile=p_signal.get() />
-								<div class="flex flex-col items-center justify-center gap-2 at-view">
-									<div class="flex flex-col gap-2 w-full at-wrap">
-										<div 
-											class="prose flex items-center justify-center p-2 at-desc" 
-											inner_html={md2html(&res.description.clone().unwrap_or_default()).html}
-										></div>
-										<AtBox did=p_signal.get().did services=res.services.clone() profile=p_signal /> 
+					if let Some(res) = res.as_ref().cloned() {
+						view! {
+							<Style>{res.style.unwrap_or_default()}</Style>
+							<div class="min-h-screen w-screen at-screen">
+								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
+									<ProfileView profile=p_signal.get() />
+									<div class="flex flex-col items-center justify-center gap-2 at-view">
+										<div class="flex flex-col gap-2 w-full at-wrap">
+											<div 
+												class="prose flex items-center justify-center p-2 at-desc" 
+												inner_html={md2html(&res.description.clone().unwrap_or_default()).html}
+											></div>
+											<AtBox did=p_signal.get().did services=res.services.clone() profile=p_signal /> 
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					}
-					.into_any()
+						}
+						.into_any()
+					} else {
+						view! {
+							<div class="min-h-screen w-screen at-screen">
+								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl">
+									<ProfileView profile=p_signal.get() />
+									<a class="link link-hover mt-4" href="/setup">"Setup my ATPage"</a>
+								</div>
+							</div>
+						}
+						.into_any()
+				  }
 				}
 				None => "error".into_any()
 			}}
