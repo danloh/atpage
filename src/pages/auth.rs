@@ -92,16 +92,6 @@ pub fn LogIn() -> impl IntoView {
           "Log In"
         </button>
       </form>
-      <div class="my-4 text-center">
-        "The App is running in your browser only."
-      </div>
-      <a 
-        class="text-success text-center" 
-        href="https://bsky.app" 
-        target="_blank"
-      >
-        "No ATmosphere Account? Let's start with Bluesky."
-      </a>
     </div>
   }
 }
