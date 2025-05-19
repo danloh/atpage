@@ -21,6 +21,10 @@
             "type": "string",
             "description": "customized style of the atpage"
           },
+          "script": {
+            "type": "string",
+            "description": "Injected JaveScript to atpage"
+          },
           "services": {
             "type": "array",
             "description": "Record containing a list of atproto service to display",

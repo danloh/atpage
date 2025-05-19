@@ -55,6 +55,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 					if let Some(res) = res.as_ref().cloned() {
 						view! {
 							<Style>{res.style.unwrap_or_default()}</Style>
+							<Script>{res.script.unwrap_or_default()}</Script>
 							<div class="min-h-screen w-screen at-screen">
 								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
 									<ProfileView profile=p_signal.get() />

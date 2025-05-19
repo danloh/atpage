@@ -165,8 +165,9 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 	let links: RwSignal<Vec<LinkEntry>> = RwSignal::new(val.links);
 
 	let title_ref = NodeRef::<Textarea>::new();
-	let style_ref = NodeRef::<Textarea>::new();
 	let desc_ref = NodeRef::<Textarea>::new();
+	let style_ref = NodeRef::<Textarea>::new();
+	let script_ref = NodeRef::<Textarea>::new();
 
   let services: RwSignal<Vec<String>> = RwSignal::new(val.services);
 
@@ -178,6 +179,9 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 	
 	let UseTextareaAutosizeReturn { content: _, set_content: set_style, trigger_resize: _ } =
 		use_textarea_autosize(style_ref);
+
+	let UseTextareaAutosizeReturn { content: _, set_content: set_script, trigger_resize: _ } =
+		use_textarea_autosize(script_ref);
 
 	view! {
 		<div class="flex flex-col gap-2 w-full h-full">
@@ -255,6 +259,17 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_style.set(event_target_value(&evt))
 				required
 			></textarea>
+			<b class="text-start">"Script"</b>
+			<textarea
+				prop:value={val.script.unwrap_or_default()}
+				node_ref=script_ref
+				name="script"
+				id="script"
+				class="textarea h-full w-full"
+				placeholder="Inject JavaScript"
+				on:input=move |evt| set_script.set(event_target_value(&evt))
+				required
+			></textarea>
 			{move || links
 				.get()
 				.iter()
@@ -282,10 +297,11 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					spawn_local(async move {
 						disable_btn.set(true);
 						let new_data = AtPageValue {
+							services: services.get(),
 							title: title_ref.get().map(|t| t.value()),
 							description: desc_ref.get().map(|d| d.value()),
 							style: style_ref.get().map(|s| s.value()),
-							services: services.get(),
+							script: script_ref.get().map(|s| s.value()),
 							..Default::default()
 						};
 

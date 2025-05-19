@@ -30,6 +30,7 @@ pub struct AtPageValue {
   pub title: Option<String>,
   pub description: Option<String>,
   pub style: Option<String>,
+  pub script: Option<String>,
 }
 
 /// for record link entry
@@ -88,6 +89,7 @@ pub async fn put_atpage_record(
       "title": data.title.clone().unwrap_or_default(),
       "description": data.description.clone().unwrap_or_default(),
       "style": data.style.clone().unwrap_or_default(),
+      "script": data.script.clone().unwrap_or_default(),
 		},
 		"validate": false
 	});
