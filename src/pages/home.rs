@@ -378,7 +378,6 @@ pub fn LinkForm(
 				disabled={disable_btn}
 				on:click=move |event| {
 					event.prevent_default();
-					
 					spawn_local(async move {
 						disable_btn.set(true);
 						links.update(|lnks| {
