@@ -96,7 +96,6 @@ pub fn SetupPage() -> impl IntoView {
 			<Suspense fallback=move || "Loading" >
 				{move || match profile.get() {
 					Some(p) => { 
-						let p = p.as_ref().clone();
 						match p {
 							Ok(profile) => {
 								view! { 
@@ -149,9 +148,8 @@ pub fn SetupWrap(did: String) -> impl IntoView {
 		<div class="flex flex-col items-center justify-center">
 			<Suspense fallback=move || "Loading" >
 				{move || match atpage.get() {
-					Some(pg) => { 
-						let val = pg.as_ref().cloned();
-						view! { <SetupForm val=val.clone().unwrap_or_default() /> }.into_any()
+					Some(val) => { 
+						view! { <SetupForm val=val.unwrap_or_default() /> }.into_any()
 					}
 					None => "".into_any()
 				}}

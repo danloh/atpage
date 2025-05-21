@@ -26,10 +26,9 @@ pub fn AtPage() -> impl IntoView {
 		<Suspense fallback=move || "Loading" >
 			{move || match profile.get() {
 				Some(p) => { 
-					let p = p.as_ref().clone();
 					match p {
 						Ok(profile) => {
-							view! { <AtView profile=profile.clone() /> }.into_any()
+							view! { <AtView profile /> }.into_any()
 						}
 						Err(_e) => "".into_any()
 					}
@@ -51,8 +50,8 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 	view! {
 		<Suspense fallback=move || "Loading">
 			{move || match atpage.get() {
-				Some(res) => {
-					if let Some(res) = res.as_ref().cloned() {
+				Some(res_) => {
+					if let Some(res) = res_ {
 						view! {
 							<Style>{res.style.unwrap_or_default()}</Style>
 							<Script>{res.script.unwrap_or_default()}</Script>
