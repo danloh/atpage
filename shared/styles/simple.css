@@ -1,0 +1,16 @@
+body {
+  background-color: #23383a;
+}
+.at-card {    
+  position: relative;
+  max-width: 520px;
+  padding: 16px;
+  margin: 10px auto;
+  background: lightblue;
+  word-break: break-word;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.at-title {
+  color: #b0f;
+}

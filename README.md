@@ -1,7 +1,7 @@
 
 # atpage
 
-All footprints on ATProto into one page. 
+All footprints on ATProto into one customizable page. 
 
 ## Features
 
@@ -15,6 +15,7 @@ All footprints on ATProto into one page.
 - frontpage: https://frontpage.fyi
 - whitewind: https://whtwnd.com
 - pinksea: https://pinksea.art 
+- ruthub: https://ruthub.com 
 
 Welcome to submit services via [new issue](https://github.com/danloh/atpage/issues/new?template=new_service.md).
 
