@@ -51,7 +51,7 @@ pub async fn get_wnd_records(
               link,
               content: value.content,
               images: Vec::new(),
-              timestamp: str_to_timestamp(&value.createdAt),
+              timestamp: str_to_timestamp(&value.createdAt) / 1000,
             };
             recs.push(rec);
           }

@@ -130,8 +130,20 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 					src={profile.get().avatar.clone().unwrap_or_default()} 
 					loading="lazy" 
 				/>
+				<a 
+					href={format!("https://bsky.app/profile/{}", profile.get().handle.clone())} 
+					target="_blank" 
+					class={format!("link link-hover text-xs at-hdl at-hdl-{}", kd)}  
+				>
+					{
+						profile.get().displayName.clone().map(|n| {
+							if n.trim().is_empty() { profile.get().handle.clone() } else { n }
+						})
+						.unwrap_or_else(|| profile.get().handle.clone())
+					}
+			  </a>
 				<span class={format!("text-xs at-date at-date-{}", kd)}>
-					{ts_to_dt(rec.timestamp / 1000)}
+					{ts_to_dt(rec.timestamp)}
 				</span>
 				<a 
 					href={rec.link.clone()} 
@@ -153,7 +165,11 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 			<div class={format!("w-full flex flex-wrap items-center justify-center gap-2 at-images at-images-{}", kd)}>
 				{
 					rec.images.into_iter().map(|img| view! { 
-						<img class="max-w-full p-2 at-image" src={img} loading="lazy" /> 
+						<img 
+							class={format!("max-w-full p-2 at-image at-image-{}", kd)}
+							src={img} 
+							loading="lazy" 
+						/> 
 					})
 					.collect_view()
 				}

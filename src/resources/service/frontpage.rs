@@ -50,7 +50,7 @@ pub async fn get_frontpage_records(
               link,
               content: format!("{} <{}>", value.title, value.url),
               images: Vec::new(),
-              timestamp: str_to_timestamp(&value.createdAt),
+              timestamp: str_to_timestamp(&value.createdAt) / 1000,
             };
             recs.push(rec);
           }

@@ -14,7 +14,7 @@ pub fn go_to(page: impl AsRef<str>) {
 /// timestamp(sec) to formated str
 pub fn ts_to_dt(ts: i64) -> String {
 	let dt = DateTime::from_timestamp(ts, 0).unwrap_or_else(|| Utc::now());
-	format!("{}", dt.format("%d %b %Y, %a"))
+	format!("{}", dt.format("%d %b %Y %a %H:%M"))
 }
 
 /// formatted datetime str to the number of non-leap-milliseconds

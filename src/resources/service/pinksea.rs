@@ -51,12 +51,12 @@ pub async fn get_pinksea_records(
 ) -> (Vec<AtRecord>, Option<String>) {
 	match list_record("com.shinolabs.pinksea.oekaki", service, &did, cur).await {
 		Ok(raw_data) => {
-      gloo::console::log!("pinksea records: ", format!("{:?}", raw_data));
+      // gloo::console::log!("pinksea records: ", format!("{:?}", raw_data));
 			match serde_json::from_str::<PinkSeaListResp>(&raw_data) {
 				Ok(data_res) => {
           let cursor = data_res.cursor;
 					let entrylist: Vec<PinkSeaResp> = data_res.records;
-          let mut recs: Vec<AtRecord> = Vec::new();
+          let mut at_records: Vec<AtRecord> = Vec::new();
           for entry in entrylist {
             let uri = entry.uri;
             let (did, _col, rkey) = uri_parts(&uri);
@@ -72,14 +72,14 @@ pub async fn get_pinksea_records(
               link,
               content: String::new(),
               images: vec![img_link],
-              timestamp: str_to_timestamp(&value.createdAt),
+              timestamp: str_to_timestamp(&value.createdAt) / 1000,
             };
-            recs.push(rec);
+            at_records.push(rec);
           }
 
-          gloo::console::log!("pinksea res: ", format!("{:?}", recs));
+          // gloo::console::log!("pinksea res: ", format!("{:?}", at_records));
 
-					return (recs, cursor); 
+					return (at_records, cursor); 
         }
 				Err(e) => {
           gloo::console::log!("get pinksea records error: ", format!("{:?}", e));

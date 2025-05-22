@@ -72,10 +72,11 @@ pub fn Home() -> impl IntoView {
 }
 
 /// (name, category, domain)
-pub const AT_SERVICES: [(&str, &str, &str); 3] = [
+pub const AT_SERVICES: [(&str, &str, &str); 4] = [
 	("frontpage", "Links", "https://frontpage.fyi"),
 	("whitewind", "Blog", "https://whtwnd.com"), 
 	("pinksea", "Oekaki", "https://pinksea.art"), 
+	("ruthub", "Tracker", "https://ruthub.com"),
 ];
 
 /// endpoint `/setup`
@@ -303,7 +304,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 							..Default::default()
 						};
 
-						gloo::console::log!("value: ", format!("{:?}", new_data));
+						// gloo::console::log!("value: ", format!("{:?}", new_data));
 						let auth = use_auth("/setup");
 						_ = put_atpage_record(auth.get(), &new_data).await;
 						
