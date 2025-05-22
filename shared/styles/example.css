@@ -1,0 +1,82 @@
+/* example of a shared style file, working in progress  */
+
+body {
+  background-color: lightblue;
+}; 
+
+/* the whole page */
+.at-screen {
+  background-color: lightblue;
+}; 
+
+.at-page a {
+  color: greenyellow;
+}
+
+.at-profile {
+  padding: auto;
+}
+
+.at-desc {
+  padding: auto;
+}
+
+.at-view {
+  padding: auto;
+}
+
+.at-wrap {
+  padding: auto;
+}
+
+.at-box {
+  padding: auto;
+}
+
+.at-card {
+  padding: auto;
+}
+
+/* the card of a specific service: at-card-* */
+.at-card-frontpage {
+  padding: auto;
+}
+
+/* the meta bar of a card */
+.at-meta {
+  padding: auto;
+}
+
+/* the avatar image thumbnail */
+.at-ava {
+  padding: auto;
+}
+
+.at-date {
+  padding: auto;
+}
+
+.at-kind {
+  padding: auto;
+}
+
+/* for specific service. also: at-ava-*, at-date-*, at-kind-* */
+.at-meta-frontpage {
+  padding: auto;
+}
+
+.at-title {
+  padding: auto;
+}
+
+.at-images {
+  padding: auto;
+}
+
+.at-ctn {
+  padding: auto;
+}
+
+#toast {
+  padding: auto;
+}

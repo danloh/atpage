@@ -141,11 +141,11 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 					{format!("@{}", kd)}
 				</a>
 			</div>
-			<div class={format!("flex items-center justify-start gap-2 at-title at-tt-{}", kd)}>
+			<div class={format!("flex items-center justify-start gap-2 at-title at-title-{}", kd)}>
 				<a 
 					href={rec.link} 
 					target="_blank" 
-					class={format!("font-bold text-xl link link-hover at-title-link at-tl-{}", kd)} 
+					class={format!("font-bold text-xl link link-hover at-title-link at-title-link-{}", kd)} 
 				>
 					{rec.title}
 				</a>
