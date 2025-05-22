@@ -1,6 +1,6 @@
 use leptos::prelude::*;
-use leptos_router::hooks::use_params_map;
 use leptos_meta::*;
+use leptos_router::hooks::use_params_map;
 
 use crate::helper::md::md2html;
 use crate::helper::utils::ts_to_dt;
@@ -11,31 +11,27 @@ use crate::resources::auth::{get_profile, ProfileRes};
 #[component]
 pub fn AtPage() -> impl IntoView {
 	let params = use_params_map();
-  let handle: String = params.read().get("handle").unwrap_or_default();
+	let handle: String = params.read().get("handle").unwrap_or_default();
 	if handle.trim().is_empty() {
 		return "No Data".into_any();
 	}
 
 	let txt = format!("@{} | atpage", &handle);
-	let profile = LocalResource::new(
-		move || get_profile(handle.clone())
-	);
+	let profile = LocalResource::new(move || get_profile(handle.clone()));
 
 	view! {
 		<Title text={txt} />
 		<Suspense fallback=move || "Loading" >
 			{move || match profile.get() {
-				Some(p) => { 
+				Some(p) => {
 					match p {
-						Ok(profile) => {
-							view! { <AtView profile /> }.into_any()
-						}
+						Ok(profile) => { view! { <AtView profile /> }.into_any() }
 						Err(_e) => "".into_any()
 					}
 				}
 				None => "".into_any()
 			}}
-		</Suspense>			
+		</Suspense>
 	}
 	.into_any()
 }
@@ -43,9 +39,7 @@ pub fn AtPage() -> impl IntoView {
 #[component]
 pub fn AtView(profile: ProfileRes) -> impl IntoView {
 	let p_signal = RwSignal::new(profile);
-	let atpage = LocalResource::new(
-		move || fetch_atpage(p_signal.get().did)
-	);
+	let atpage = LocalResource::new(move || fetch_atpage(p_signal.get().did));
 
 	view! {
 		<Suspense fallback=move || "Loading">
@@ -60,11 +54,22 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 									<ProfileView profile=p_signal.get() />
 									<div class="flex flex-col items-center justify-center gap-2 at-view">
 										<div class="flex flex-col gap-2 w-full at-wrap">
-											<div 
-												class="prose flex items-center justify-center p-2 at-desc" 
+											<div
+												class="prose flex items-center justify-center p-2 at-desc"
 												inner_html={md2html(&res.description.clone().unwrap_or_default()).html}
 											></div>
-											<AtBox did=p_signal.get().did services=res.services.clone() profile=p_signal /> 
+											<AtBox did=p_signal.get().did services=res.services.clone() profile=p_signal />
+										</div>
+										<div class="my-4 at-btm">
+										  <a href="/setup" class="link link-hover at-join">
+											  {format!(
+													"Join {} on ATPage",
+													p_signal.get().displayName.clone().map(|n| {
+														if n.trim().is_empty() { p_signal.get().handle.clone() } else { n }
+													})
+													.unwrap_or_else(|| p_signal.get().handle.clone()))
+								        }
+											</a>
 										</div>
 									</div>
 								</div>
@@ -85,19 +90,13 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 				}
 				None => "error".into_any()
 			}}
-		</Suspense>	
+		</Suspense>
 	}
 }
 
 #[component]
-pub fn AtBox(
-	did: String, 
-	services: Vec<String>, 
-	profile: RwSignal<ProfileRes>,
-) -> impl IntoView {
-	let rec_res = LocalResource::new(
-		move || fetch_records((did.clone(), services.clone()))
-	);
+pub fn AtBox(did: String, services: Vec<String>, profile: RwSignal<ProfileRes>) -> impl IntoView {
+	let rec_res = LocalResource::new(move || fetch_records((did.clone(), services.clone())));
 
 	view! {
 		<div class="flex flex-col items-center justify-center gap-2 at-box">
@@ -107,8 +106,8 @@ pub fn AtBox(
 						res
 							.records
 							.iter()
-					    .map(|rec| view! { <RecCard rec=rec.clone() profile /> })
-					    .collect_view()
+						  .map(|rec| view! { <RecCard rec=rec.clone() profile /> })
+						  .collect_view()
 							.into_any()
 					}
 					_ => "error".into_any()
@@ -122,18 +121,18 @@ pub fn AtBox(
 pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 	let kd = rec.kind;
 
-	view! { 
+	view! {
 		<div class={format!("w-full p-2 at-card at-card-{}", kd)}>
 			<div class={format!("flex items-center justify-start gap-2 at-meta at-meta-{}", kd)}>
-				<img 
-					class={format!("h-4 w-4 rounded at-ava at-ava-{}", kd)}  
-					src={profile.get().avatar.clone().unwrap_or_default()} 
-					loading="lazy" 
+				<img
+					class={format!("h-4 w-4 rounded at-ava at-ava-{}", kd)}
+					src={profile.get().avatar.clone().unwrap_or_default()}
+					loading="lazy"
 				/>
-				<a 
-					href={format!("https://bsky.app/profile/{}", profile.get().handle.clone())} 
-					target="_blank" 
-					class={format!("link link-hover text-xs at-hdl at-hdl-{}", kd)}  
+				<a
+					href={format!("https://bsky.app/profile/{}", profile.get().handle.clone())}
+					target="_blank"
+					class={format!("link link-hover text-xs at-hdl at-hdl-{}", kd)}
 				>
 					{
 						profile.get().displayName.clone().map(|n| {
@@ -145,40 +144,40 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 				<span class={format!("text-xs at-date at-date-{}", kd)}>
 					{ts_to_dt(rec.timestamp)}
 				</span>
-				<a 
-					href={rec.link.clone()} 
-					class={format!("link link-hover text-xs at-kind at-kind-{}", kd)}    
-					target="_blank" 
+				<a
+					href={rec.link.clone()}
+					class={format!("link link-hover text-xs at-kind at-kind-{}", kd)}
+					target="_blank"
 				>
 					{format!("@{}", kd)}
 				</a>
 			</div>
 			<div class={format!("flex items-center justify-start gap-2 at-title at-title-{}", kd)}>
-				<a 
-					href={rec.link} 
-					target="_blank" 
-					class={format!("font-bold text-xl link link-hover at-title-link at-title-link-{}", kd)} 
+				<a
+					href={rec.link}
+					target="_blank"
+					class={format!("font-bold text-xl link link-hover at-title-link at-title-link-{}", kd)}
 				>
 					{rec.title}
 				</a>
 			</div>
 			<div class={format!("w-full flex flex-wrap items-center justify-center gap-2 at-images at-images-{}", kd)}>
 				{
-					rec.images.into_iter().map(|img| view! { 
-						<img 
+					rec.images.into_iter().map(|img| view! {
+						<img
 							class={format!("max-w-full p-2 at-image at-image-{}", kd)}
-							src={img} 
-							loading="lazy" 
-						/> 
+							src={img}
+							loading="lazy"
+						/>
 					})
 					.collect_view()
 				}
 			</div>
-			<div 
-				class={format!("flex-1 prose no-scrollbar at-ctn at-ctn-{}", kd)} 
-				style="max-height: 240px; overflow: auto" 
-				inner_html={md2html(&rec.content).html} 
-			></div> 
+			<div
+				class={format!("flex-1 prose no-scrollbar at-ctn at-ctn-{}", kd)}
+				style="max-height: 240px; overflow: auto"
+				inner_html={md2html(&rec.content).html}
+			></div>
 		</div>
 	}
 }
@@ -187,14 +186,14 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 	view! {
 		<div class="flex flex-wrap items-center justify-center gap-2 at-profile">
-			<img 
-				class="h-8 w-8 rounded-full at-avatar" 
-				src={profile.avatar.clone().unwrap_or_default()} 
-				loading="lazy" 
+			<img
+				class="h-8 w-8 rounded-full at-avatar"
+				src={profile.avatar.clone().unwrap_or_default()}
+				loading="lazy"
 			/>
-			<a 
-				href={format!("https://bsky.app/profile/{}", profile.handle.clone())} 
-				target="_blank" 
+			<a
+				href={format!("https://bsky.app/profile/{}", profile.handle.clone())}
+				target="_blank"
 				class="link link-hover text-2xl at-handle"
 			>
 				{
@@ -204,6 +203,6 @@ pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 					.unwrap_or_else(|| profile.handle.clone())
 				}
 			</a>
-		</div>	
+		</div>
 	}
 }
