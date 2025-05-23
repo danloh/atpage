@@ -74,9 +74,9 @@ pub fn Home() -> impl IntoView {
 /// (name, category, domain)
 pub const AT_SERVICES: [(&str, &str, &str); 4] = [
 	("frontpage", "Links", "https://frontpage.fyi"),
-	("whitewind", "Blog", "https://whtwnd.com"), 
 	("pinksea", "Oekaki", "https://pinksea.art"), 
 	("ruthub", "Tracker", "https://ruthub.com"),
+	("whitewind", "Blog", "https://whtwnd.com"), 
 ];
 
 /// endpoint `/setup`

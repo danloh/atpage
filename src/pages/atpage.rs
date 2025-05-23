@@ -66,21 +66,21 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 														let url = link.url.clone();
 														let name = link.name.clone();
 														view! {
-															<a 
+															<a
 																class={format!("link link-hover at-link at-link-{}", name)}
-																href={url} 
+																href={url}
 																title={
-																	link.description.map(|d| 
+																	link.description.map(|d|
 																		if d.trim().is_empty() { name.clone() } else { d }
 																	)
 																	.unwrap_or(name)
 																}
 															>
-															  <img 
+															  <img
 																  class={format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name)}
-																  src={get_ico(&url)} 
+																  src={get_ico(&url)}
 																	alt={name.clone()}
-																	loading="lazy" 
+																	loading="lazy"
 																/>
 															</a>
 														}
@@ -88,10 +88,10 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 													.collect_view()
 											  }
 											</div>
-											<AtBox 
-											  did=p_signal.get().did 
-												services=res.services.clone() 
-												profile=p_signal 
+											<AtBox
+											  did=p_signal.get().did
+												services=res.services.clone()
+												profile=p_signal
 											/>
 										</div>
 										<div class="my-4 at-btm">
@@ -102,7 +102,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 														if n.trim().is_empty() { p_signal.get().handle.clone() } else { n }
 													})
 													.unwrap_or_else(|| p_signal.get().handle.clone()))
-								        }
+										}
 											</a>
 										</div>
 									</div>

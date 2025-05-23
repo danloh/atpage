@@ -47,7 +47,6 @@ pub struct TrackItem {
 
 #[derive(Clone, Default, Serialize, Deserialize, PartialEq, Debug)]
 pub struct Item {
-	// tv, movie, album, game, book, podcast
 	pub kind: String,
 	pub uuid: String,
 	pub title: String,
