@@ -17,7 +17,11 @@ body {
   padding: auto;
 }
 
-.at-desc {
+.at-avatar {
+  padding: auto;
+}
+
+.at-handle {
   padding: auto;
 }
 
@@ -26,6 +30,10 @@ body {
 }
 
 .at-wrap {
+  padding: auto;
+}
+
+.at-desc {
   padding: auto;
 }
 
@@ -49,11 +57,6 @@ body {
   padding: auto;
 }
 
-/* the card of a specific service: at-card-* */
-.at-card-frontpage {
-  padding: auto;
-}
-
 /* the meta bar of a card */
 .at-meta {
   padding: auto;
@@ -61,6 +64,10 @@ body {
 
 /* the avatar image thumbnail */
 .at-ava {
+  padding: auto;
+}
+
+.at-hdl {
   padding: auto;
 }
 
@@ -72,12 +79,11 @@ body {
   padding: auto;
 }
 
-/* for specific service. also: at-ava-*, at-date-*, at-kind-* */
-.at-meta-frontpage {
+.at-title {
   padding: auto;
 }
 
-.at-title {
+.at-title-link {
   padding: auto;
 }
 
@@ -85,10 +91,37 @@ body {
   padding: auto;
 }
 
+.at-image {
+  padding: auto;
+}
+
 .at-ctn {
   padding: auto;
 }
 
-#toast {
+.at-btm {
   padding: auto;
 }
+
+#at-toast {
+  padding: auto;
+}
+
+/* for specific service: 
+at-card-*,
+at-meta-*,
+at-ava-*, 
+at-hdl-*,
+at-date-*, 
+at-kind-*,
+at-title-*,
+at-title-link-*,
+at-images-*,
+at-image-*,
+at-ctn-*,
+*/
+
+/* for specific link: 
+at-link-*,
+at-ico-*,
+*/

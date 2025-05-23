@@ -3,6 +3,7 @@ use leptos::html::{Input, Textarea};
 use leptos::task::spawn_local;
 use leptos_meta::Title;
 use leptos_use::{use_textarea_autosize, UseTextareaAutosizeReturn};
+
 use crate::helper::utils::go_to;
 use crate::resources::atpage::{fetch_atpage, put_atpage_record, LinkEntry, AtPageValue};
 use crate::resources::auth::{get_profile, use_auth};
@@ -52,11 +53,17 @@ pub fn Home() -> impl IntoView {
 				</div>
 				<div class="flex items-center justify-center gap-2 mt-4">
 					<a 
-						class="text-success text-center link link-hover" 
-						href="https://bsky.app/profile/atpage.bsky.social" 
+						class="text-accent text-center link link-hover" 
+						href="https://bsky.app/profile/atpage.one" 
 						target="_blank"
 					>
 						"Bluesky"
+					</a>
+					<a 
+						class="text-secondary text-center link link-hover" 
+						href="/atpage.one" 
+					>
+						"ATPage"
 					</a>
 					<a 
 						class="text-success text-center link link-hover" 

@@ -47,26 +47,3 @@
     font-size: 1rem;
     border-radius: 0 0 8px 0;
   }
-
-  #toast {
-    opacity: 0;
-    min-width: 200px;
-    transform: translateX(-50%);
-    background-color: #047857;
-    color: #ffffff;
-    border-color: #047857;
-    text-align: center;
-    border-radius: 20px;
-    padding: 16px;
-    position: fixed;
-    z-index: 1;
-    left: 50%;
-    margin-bottom: 50px;
-    transition: all 500ms;
-    bottom: 0px;
-  }
-
-  #toast.show {
-    bottom: 30px;
-    opacity: 1;
-  }

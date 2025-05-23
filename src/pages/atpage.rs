@@ -16,7 +16,7 @@ pub fn AtPage() -> impl IntoView {
 		return "No Data".into_any();
 	}
 
-	let txt = format!("@{} | atpage", &handle);
+	let txt = format!("{} | atpage", &handle);
 	let profile = LocalResource::new(move || get_profile(handle.clone()));
 
 	view! {
