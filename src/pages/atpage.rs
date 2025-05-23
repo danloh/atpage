@@ -3,7 +3,7 @@ use leptos_meta::*;
 use leptos_router::hooks::use_params_map;
 
 use crate::helper::md::md2html;
-use crate::helper::utils::ts_to_dt;
+use crate::helper::utils::{get_ico, ts_to_dt};
 use crate::resources::atpage::{fetch_atpage, fetch_records, AtRecord};
 use crate::resources::auth::{get_profile, ProfileRes};
 
@@ -56,9 +56,43 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 										<div class="flex flex-col gap-2 w-full at-wrap">
 											<div
 												class="prose flex items-center justify-center p-2 at-desc"
-												inner_html={md2html(&res.description.clone().unwrap_or_default()).html}
+												inner_html={md2html(&res.description.unwrap_or_default()).html}
 											></div>
-											<AtBox did=p_signal.get().did services=res.services.clone() profile=p_signal />
+											<div class="flex flex-wrap items-center justify-center gap-2 at-links">
+											  {res
+													.links
+													.into_iter()
+													.map(|link| {
+														let url = link.url.clone();
+														let name = link.name.clone();
+														view! {
+															<a 
+																class={format!("link link-hover at-link at-link-{}", name)}
+																href={url} 
+																title={
+																	link.description.map(|d| 
+																		if d.trim().is_empty() { name.clone() } else { d }
+																	)
+																	.unwrap_or(name)
+																}
+															>
+															  <img 
+																  class={format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name)}
+																  src={get_ico(&url)} 
+																	alt={name.clone()}
+																	loading="lazy" 
+																/>
+															</a>
+														}
+													})
+													.collect_view()
+											  }
+											</div>
+											<AtBox 
+											  did=p_signal.get().did 
+												services=res.services.clone() 
+												profile=p_signal 
+											/>
 										</div>
 										<div class="my-4 at-btm">
 										  <a href="/setup" class="link link-hover at-join">

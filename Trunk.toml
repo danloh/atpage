@@ -12,7 +12,7 @@ minify = "always"
 
 [watch]
 watch = []
-ignore = ["./asset", "./devlog.md", "./README.md"]
+ignore = ["./asset", "./shared", "./devlog.md", "./README.md"]
 
 [serve]
 address = "127.0.0.1"

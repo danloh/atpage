@@ -100,7 +100,7 @@ pub fn SetupPage() -> impl IntoView {
 						match p {
 							Ok(profile) => {
 								view! { 
-									<div class="flex flex-col gap-2 w-full">
+									<div class="flex flex-col gap-2 w-full mb-4">
 										<div class="flex flex-col items-center justify-center gap-2 mb-4">
 											<div class="flex flex-wrap items-center justify-start gap-2">
 												<img 
@@ -161,15 +161,13 @@ pub fn SetupWrap(did: String) -> impl IntoView {
 
 #[component]
 pub fn SetupForm(val: AtPageValue) -> impl IntoView {
-	let links: RwSignal<Vec<LinkEntry>> = RwSignal::new(val.links);
-
 	let title_ref = NodeRef::<Textarea>::new();
 	let desc_ref = NodeRef::<Textarea>::new();
 	let style_ref = NodeRef::<Textarea>::new();
 	let script_ref = NodeRef::<Textarea>::new();
 
+	let links: RwSignal<Vec<LinkEntry>> = RwSignal::new(val.links);
   let services: RwSignal<Vec<String>> = RwSignal::new(val.services);
-
 	let disable_btn = RwSignal::new(false);
 	let show_add = RwSignal::new(false);
 
@@ -183,7 +181,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 		use_textarea_autosize(script_ref);
 
 	view! {
-		<div class="flex flex-col gap-2 w-full h-full">
+		<div class="flex flex-col gap-2 w-full h-full mb-4">
 		  <b class="text-start">"Select ATProto Services"</b>
 			{AT_SERVICES
 				.into_iter()
@@ -269,27 +267,32 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_script.set(event_target_value(&evt))
 				required
 			></textarea>
-			{move || links
-				.get()
-				.iter()
-				//.filter(predicate)
-				.map(|link| {
-					view! { <LinkForm links link=link.clone() /> }
-				})
-				.collect_view()
-			}
-			<button
-				class="btn btn-xs btn-ghost rounded-sm p-1 m-1 hidden"
-				title="Add Link"
-				on:click=move |_| { show_add.set(!show_add.get()); }
-			>
-				{move || if show_add.get() {"-"} else {"+"}}
-			</button>
+			<div class="flex items-center justify-between gap-2">
+			  <b class="text-start">"Links"</b>
+				<button
+					class="btn btn-xs btn-ghost rounded-sm p-1 m-1 text-success"
+					title="Add Link"
+					on:click=move |_| { show_add.set(!show_add.get()); }
+				>
+					{move || if show_add.get() {"Cancel"} else {"Add"}}
+				</button>
+			</div>
+			<div class="flex flex-col items-center justify-center gap-2 w-full">
+				{move || links
+					.get()
+					.iter()
+					//.filter(predicate)
+					.map(|link| {
+						view! { <LinkBox links link=link.clone() /> }
+					})
+					.collect_view()
+				}
+			</div>
 			<Show when=move || { show_add.get() } fallback=|| "" >
-				<LinkForm links link=Default::default() />
+				<LinkForm links link=Default::default() show=show_add />
 			</Show>
 			<button
-				class="btn btn-sm text-success mt-4"
+				class="btn text-success mt-4"
 				disabled={disable_btn}
 				on:click=move |event| {
 					event.prevent_default();
@@ -297,6 +300,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 						disable_btn.set(true);
 						let new_data = AtPageValue {
 							services: services.get(),
+							links: links.get(),
 							title: title_ref.get().map(|t| t.value()),
 							description: desc_ref.get().map(|d| d.value()),
 							style: style_ref.get().map(|s| s.value()),
@@ -315,7 +319,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					});
 				}
 			>
-				"Done"
+				"DONE"
 			</button>
 		</div>
 	}
@@ -325,10 +329,11 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 pub fn LinkForm(
 	links: RwSignal<Vec<LinkEntry>>,
 	link: LinkEntry,
+	show: RwSignal<bool>,
 ) -> impl IntoView {
 	let name_ref = NodeRef::<Input>::new();
-	let url_ref = NodeRef::<Textarea>::new();
-	let desc_ref = NodeRef::<Textarea>::new();
+	let url_ref = NodeRef::<Input>::new();
+	let desc_ref = NodeRef::<Input>::new();
 	let style_ref = NodeRef::<Textarea>::new();
 
 	let disable_btn = RwSignal::new(false);
@@ -340,81 +345,118 @@ pub fn LinkForm(
 				type="text"
 				name="name"
 				id="name"
-				class="input font-bold w-full"
+				class="input w-full"
 				value={link.name}
 				placeholder="name"
 				required
 			/>
-			<textarea
+			<input
 				node_ref=url_ref
 				name="url"
 				id="url"
-				class="textarea w-full"
+				class="input w-full"
 				placeholder="URL"
 				prop:value={link.url}
 				required
-			></textarea>
-			<textarea
+			/>
+			<input
 				node_ref=desc_ref
 				name="description"
 				id="description"
-				class="textarea w-full"
+				class="input w-full"
 				placeholder="description"
 				prop:value={link.description.unwrap_or_default()}
 				required
-			></textarea>
+			/>
 			<textarea
 				node_ref=style_ref
 				name="style"
 				id="style"
-				class="textarea w-full"
+				class="textarea w-full hidden"
 				placeholder="style"
 				prop:value={link.style.unwrap_or_default()}
 				required
 			></textarea>
-			<button
-				class="btn btn-sm text-success mt-4"
-				disabled={disable_btn}
-				on:click=move |event| {
-					event.prevent_default();
-					spawn_local(async move {
-						disable_btn.set(true);
-						links.update(|lnks| {
-							let url = url_ref.get().unwrap().value();
-							let new_link = LinkEntry {
-								url: url.clone(),
-								name: name_ref.get().unwrap().value(),
-								description: Some(desc_ref.get().unwrap().value()),
-								style: Some(style_ref.get().unwrap().value()),
-								..Default::default()
-							};
-							lnks.retain(|l| l.url != url);
-							lnks.push(new_link);
+			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
+				<button
+					class="btn btn-xs text-warning"
+					disabled={disable_btn}
+					on:click=move |event| {
+						event.prevent_default();
+						spawn_local(async move {
+							disable_btn.set(true);
+							links.update(|lnks| {
+								let url = url_ref.get().unwrap().value();
+								lnks.retain(|l| l.url != url);
+							});
+							disable_btn.set(false);
+							show.set(false);
 						});
-						disable_btn.set(false);
-					});
-				}
-			>
-				"Add"
-			</button>
-			<button
-				class="btn btn-sm text-success mt-4"
-				disabled={disable_btn}
-				on:click=move |event| {
-					event.prevent_default();
-					
-					spawn_local(async move {
-						disable_btn.set(true);
-						links.update(|lnks| {
-							let url = url_ref.get().unwrap().value();
-							lnks.retain(|l| l.url != url);
+					}
+				>
+					"Remove"
+				</button>
+				<button
+					class="btn btn-xs text-success"
+					disabled={disable_btn}
+					on:click=move |event| {
+						event.prevent_default();
+						spawn_local(async move {
+							disable_btn.set(true);
+							links.update(|lnks| {
+								let url = url_ref.get().unwrap().value();
+								let new_link = LinkEntry {
+									url: url.clone(),
+									name: name_ref.get().unwrap().value(),
+									description: desc_ref.get().map(|d| d.value()),
+									style: style_ref.get().map(|s| s.value()),
+									..Default::default()
+								};
+								lnks.retain(|l| l.url != url);
+								lnks.push(new_link);
+							});
+							disable_btn.set(false);
+							show.set(false);
 						});
-						disable_btn.set(false);
-					});
-				}
-			>
-				"remove"
-			</button>
+					}
+				>
+					"Add Link"
+				</button>
+			</div>
+		</div>
+	}
+}
+
+#[component]
+pub fn LinkBox(
+	links: RwSignal<Vec<LinkEntry>>,
+	link: LinkEntry,
+) -> impl IntoView {
+	let url = link.url.clone();
+	view! {
+		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-200 rounded">
+			<div class="w-full flex flex-wrap items-center justify-between gap-2">
+				<span class="text-start text-success">{link.name}</span>
+				<a href={link.url} target="_blank" class="link link-hover text-primary">
+				  {link.url.clone()}
+				</a>
+				<button
+					class="btn btn-xs btn-ghost text-warning"
+					on:click=move |event| {
+						event.prevent_default();
+						let url = url.clone();
+						spawn_local(async move {
+							links.update(|lnks| {
+								let url = url.clone();
+								lnks.retain(|l| l.url != url);
+							});
+						});
+					}
+				>
+					"X"
+				</button>
+			</div>
+			<div class="w-full text-sm opacity-75">{link.description}</div>
 		</div>
 	}
 }

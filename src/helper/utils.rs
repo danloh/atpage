@@ -19,10 +19,22 @@ pub fn ts_to_dt(ts: i64) -> String {
 
 /// formatted datetime str to the number of non-leap-milliseconds
 pub fn str_to_timestamp(dt: &str) -> i64 {
-  let parsed = dt
-    .parse::<DateTime<Utc>>()
-    .map(|d| d.timestamp_millis())
-    .unwrap_or_else(|_| Utc::now().timestamp_millis());
-  
-  parsed
+	let parsed = dt
+		.parse::<DateTime<Utc>>()
+		.map(|d| d.timestamp_millis())
+		.unwrap_or_else(|_| Utc::now().timestamp_millis());
+
+	parsed
+}
+
+pub fn get_host(uri: &str) -> String {
+	let new_uri = uri.replace("http://", "").replace("https://", "").replace("www.", "");
+	let parts: Vec<&str> = new_uri.split("/").collect();
+
+	parts.first().map(|s| s.to_string()).unwrap_or_else(|| uri.to_string())
+}
+
+pub fn get_ico(uri: &str) -> String {
+	let hostname = get_host(uri);
+	format!("https://icons.duckduckgo.com/ip3/{hostname}.ico")
 }
