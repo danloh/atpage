@@ -23,7 +23,7 @@ You can also share the styles and scripts of your atpage [here](/shared/readme.m
 
 ## TODO 
 
-- [ ] Honor visibility 
+- [X] Honor visibility, nsfw
 - [ ] Social feature  
 - [ ] Add links on the page  
 - [ ] Share styles and scripts with each other 

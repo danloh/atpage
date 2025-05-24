@@ -49,6 +49,13 @@ pub async fn get_wnd_records(
 					let (did, _col, rkey) = uri_parts(&uri);
 					let link = format!("https://whtwnd.com/{did}/{rkey}");
 					let value = entry.value;
+
+					// to honor the visibility
+					let vis = value.visibility.unwrap_or_default();
+					if vis != "public" {
+						continue;
+					}
+
 					let rec = AtRecord {
 						kind: String::from("whitewind"),
 						title: value.title,

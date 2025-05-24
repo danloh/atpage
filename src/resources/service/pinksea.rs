@@ -67,6 +67,12 @@ pub async fn get_pinksea_records(
 						let (did, _col, rkey) = uri_parts(&uri);
 						let link = format!("https://pinksea.art/{did}/oekaki/{rkey}");
 						let value = entry.value;
+						
+						// to honor the nsfw
+						if value.nsfw {
+							continue;
+						}
+						
 						let img_link = format!(
 							"https://harbor.pinksea.art/{did}/{}",
 							value.image.blob.linkref.link
