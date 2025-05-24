@@ -17,7 +17,7 @@ pub fn Home() -> impl IntoView {
 		<div class="min-h-screen w-screen" style="background-color: #1a404f;">
 			<div class="flex flex-col items-center justify-center px-4 pt-8 mx-auto max-w-xl">
 				<h1 class="text-4xl text-center mt-8" style="color: #d2e823;">
-					"atpage: all footprints on atproto, into one customizable page."
+					"atpage: footprints on atproto, into one customizable page."
 				</h1>
 				<p class="p-2" style="color: white;">
 					"One link in bio to help share everything you create on atproto"

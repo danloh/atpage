@@ -46,8 +46,12 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 			{move || match atpage.get() {
 				Some(res_) => {
 					if let Some(res) = res_ {
+						let style_css = match res.style {
+							Some(s) if !s.trim().is_empty() => s,
+							_ => DEFAULT_STYLE.to_string()
+						};
 						view! {
-							<Style>{res.style.unwrap_or_default()}</Style>
+							<Style>{style_css}</Style>
 							<Script>{res.script.unwrap_or_default()}</Script>
 							<div class="min-h-screen w-screen at-screen">
 								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
@@ -94,17 +98,17 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 												profile=p_signal
 											/>
 										</div>
-										<div class="my-4 at-btm">
-										  <a href="/setup" class="link link-hover at-join">
-											  {format!(
-													"Join {} on ATPage",
-													p_signal.get().displayName.clone().map(|n| {
-														if n.trim().is_empty() { p_signal.get().handle.clone() } else { n }
-													})
-													.unwrap_or_else(|| p_signal.get().handle.clone()))
-										}
-											</a>
-										</div>
+									</div>
+									<div class="my-4 at-btm">
+										<a href="/setup" class="link link-hover at-join">
+											{format!(
+												"Join {} on ATPage",
+												p_signal.get().displayName.clone().map(|n| {
+													if n.trim().is_empty() { p_signal.get().handle.clone() } else { n }
+												})
+												.unwrap_or_else(|| p_signal.get().handle.clone()))
+											}
+										</a>
 									</div>
 								</div>
 							</div>
@@ -240,3 +244,23 @@ pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 		</div>
 	}
 }
+
+const DEFAULT_STYLE: &str = "
+	body {
+		background-color: #fff8e3; 
+	}
+	.at-card {    
+		max-width: 520px;
+		padding: 10px;
+		margin: 5px auto;
+		background: #dee9de;
+		word-break: break-word;
+		border-radius: 8px;
+		box-sizing: border-box;
+	}
+	.at-hdl {
+		color: rgb(25, 137, 254);
+	}
+	.at-kind {
+		color: green;
+	}";
