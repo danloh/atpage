@@ -51,26 +51,29 @@ pub fn Home() -> impl IntoView {
 						"Setup"
 					</button>
 				</div>
-				<div class="flex items-center justify-center gap-2 mt-4">
+				<div class="flex items-center justify-center gap-4 mt-8 absolute bottom-8">
 					<a 
 						class="text-accent text-center link link-hover" 
 						href="https://bsky.app/profile/atpage.one" 
-						target="_blank"
+						target="_blank" 
+						title="Bluesky" 
 					>
-						"Bluesky"
+						<img class="h-6 w-6 hover:scale-[110%]" src="/bluesky.svg" loading="lazy" />
 					</a>
 					<a 
 						class="text-secondary text-center link link-hover" 
 						href="/atpage.one" 
+						title="ATPage" 
 					>
-						"ATPage"
+						<img class="h-6 w-6 hover:scale-[110%]" src="/favicon.svg" loading="lazy" />
 					</a>
 					<a 
 						class="text-success text-center link link-hover" 
 						href="https://github.com/danloh/atpage" 
-						target="_blank"
+						target="_blank" 
+						title="Source Code"
 					>
-						"Source"
+						<img class="h-6 w-6 hover:scale-[110%]" src="/github.svg" loading="lazy" />
 					</a>
 				</div>
 			</div>

@@ -25,6 +25,6 @@ You can also share the styles and scripts of your atpage [here](/shared/readme.m
 ## TODO 
 
 - [X] Honor visibility, nsfw
+- [x] Add links on the page  
+- [x] Share styles and scripts with each other 
 - [ ] Social feature  
-- [ ] Add links on the page  
-- [ ] Share styles and scripts with each other 
