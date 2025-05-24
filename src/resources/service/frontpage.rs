@@ -34,10 +34,10 @@ pub struct FrontpageValue {
 // TODO, leverage cursor for pagination
 pub async fn get_frontpage_records(
 	did: &str,
-	service: &str,
+	serv: &str,
 	cur: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
-	match list_record("fyi.unravel.frontpage.post", service, &did, cur).await {
+	match list_record("fyi.unravel.frontpage.post", serv, &did, cur).await {
 		Ok(raw_data) => match serde_json::from_str::<FrontpageListResp>(&raw_data) {
 			Ok(data_res) => {
 				let cursor = data_res.cursor;

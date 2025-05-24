@@ -59,10 +59,10 @@ pub struct Item {
 
 pub async fn get_ruthub_records(
 	did: &str,
-	service: &str,
+	serv: &str,
 	cursor: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
-	match list_record("com.ruthub.track", service, did, cursor).await {
+	match list_record("com.ruthub.track", serv, did, cursor).await {
 		Ok(raw_data) => match serde_json::from_str::<TrackListResp>(&raw_data) {
 			Ok(data_res) => {
 				let entrylist: Vec<TrackValue> =
@@ -71,7 +71,7 @@ pub async fn get_ruthub_records(
 				let mut at_records: Vec<AtRecord> = Vec::new();
 				let link = format!("https://ruthub.com/rut/{did}");
 				for entry in entrylist {
-					let item = get_item_record(&entry.item, did, service).await;
+					let item = get_item_record(&entry.item, did, serv).await;
 					if let Some(itm) = item {
 						let status = entry.status;
 						let act = if status == 1 {

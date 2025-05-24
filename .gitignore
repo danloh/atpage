@@ -9,4 +9,3 @@ devlog.md
 src/env.rs
 .env
 asset/main.css
-src/pages/tpage.rs

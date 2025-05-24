@@ -51,10 +51,10 @@ pub struct PinkSeaBlobLink {
 // TODO, leverage cursor for pagination
 pub async fn get_pinksea_records(
 	did: &str,
-	service: &str,
+	serv: &str,
 	cur: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
-	match list_record("com.shinolabs.pinksea.oekaki", service, &did, cur).await {
+	match list_record("com.shinolabs.pinksea.oekaki", serv, &did, cur).await {
 		Ok(raw_data) => {
 			// gloo::console::log!("pinksea records: ", format!("{:?}", raw_data));
 			match serde_json::from_str::<PinkSeaListResp>(&raw_data) {

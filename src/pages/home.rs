@@ -79,11 +79,12 @@ pub fn Home() -> impl IntoView {
 }
 
 /// (name, category, domain)
-pub const AT_SERVICES: [(&str, &str, &str); 4] = [
+pub const AT_SERVICES: [(&str, &str, &str); 5] = [
 	("frontpage", "Links", "https://frontpage.fyi"),
 	("pinksea", "Oekaki", "https://pinksea.art"), 
 	("ruthub", "Tracker", "https://ruthub.com"),
 	("whitewind", "Blog", "https://whtwnd.com"), 
+	("smokesignal", "Events", "https://smokesignal.events"), 
 ];
 
 /// endpoint `/setup`

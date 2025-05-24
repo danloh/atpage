@@ -35,10 +35,10 @@ pub struct WndValue {
 // TODO, leverage cursor for pagination
 pub async fn get_wnd_records(
 	did: &str,
-	service: &str,
+	serv: &str,
 	cur: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
-	match list_record("com.whtwnd.blog.entry", service, &did, cur).await {
+	match list_record("com.whtwnd.blog.entry", serv, &did, cur).await {
 		Ok(raw_data) => match serde_json::from_str::<WndListResp>(&raw_data) {
 			Ok(data_res) => {
 				let cursor = data_res.cursor;

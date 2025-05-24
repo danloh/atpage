@@ -11,10 +11,10 @@ pub fn uri_parts(uri: &str) -> (String, String, String) {
 	(lst[2].to_string(), lst[3].to_string(), lst[4].to_string())
 }
 
-pub async fn get_record(col: &str, rkey: &str, service: &str, did: &str) -> Result<String, String> {
+pub async fn get_record(col: &str, rkey: &str, serv: &str, did: &str) -> Result<String, String> {
 	let fetch_uri = format!(
 		"{}/xrpc/com.atproto.repo.getRecord?repo={}&collection={}&rkey={}",
-		service, did, col, rkey
+		serv, did, col, rkey
 	);
 
 	let client = reqwest::Client::new();
@@ -39,17 +39,17 @@ pub struct PutResp {
 
 pub async fn list_record(
 	col: &str,
-	service: &str,
+	serv: &str,
 	did: &str,
 	cursor: Option<String>,
 ) -> Result<String, String> {
 	let fetch_uri = if let Some(cur) = cursor {
 		format!(
 			"{}/xrpc/com.atproto.repo.listRecords?repo={}&collection={}&cursor={}",
-			service, did, col, cur
+			serv, did, col, cur
 		)
 	} else {
-		format!("{}/xrpc/com.atproto.repo.listRecords?repo={}&collection={}", service, did, col)
+		format!("{}/xrpc/com.atproto.repo.listRecords?repo={}&collection={}", serv, did, col)
 	};
 
 	let client = reqwest::Client::new();

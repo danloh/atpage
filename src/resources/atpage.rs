@@ -6,8 +6,8 @@ use super::{
 	auth::{resolve_did, AuthData},
 	record::{get_record, PutResp},
 	service::{
-		frontpage::get_frontpage_records, pinksea::get_pinksea_records, ruthub::get_ruthub_records,
-		whitewind::get_wnd_records,
+		frontpage::get_frontpage_records, pinksea::get_pinksea_records, ruthub::get_ruthub_records, 
+		smokesignal::get_smokesignal_records, whitewind::get_wnd_records
 	},
 };
 
@@ -142,6 +142,10 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 		if service == "ruthub" {
 			let (mut ruts, _r_cur) = get_ruthub_records(&did, &serv, None).await;
 			vec.append(&mut ruts);
+		}
+		if service == "smokesignal" {
+			let (mut smokes, _s_cur) = get_smokesignal_records(&did, &serv, None).await;
+			vec.append(&mut smokes);
 		}
 	}
 

@@ -16,6 +16,7 @@ All footprints on ATProto into one customizable page.
 - whitewind: https://whtwnd.com
 - pinksea: https://pinksea.art 
 - ruthub: https://ruthub.com 
+- smokesignal: https://smokesignal.events 
 
 Welcome to submit services via [new issue](https://github.com/danloh/atpage/issues/new?template=new_service.md).
 
