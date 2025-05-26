@@ -83,12 +83,14 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 														};
 														let link_class = 
 														  format!("w-full flex gap-2 link link-hover at-link at-link-{name}");
+														let link_card_class = 
+														  format!("w-full flex gap-2 at-link-card at-link-card-{name}");
 														let img_class = 
 														  format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name);
 
 														if styled {
 															view! {
-																<div class="w-full flex gap-2">
+																<div class={link_card_class}>
 																	<a
 																		class={link_class}
 																		style={link_style}

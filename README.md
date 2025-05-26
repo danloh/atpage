@@ -5,7 +5,8 @@ All footprints on ATProto into one customizable page.
 
 ## Features
 
-- Feed on one page to show your footprints on ATProto
+- linktree on ATProto, and more than that; 
+- Feed on one page to show your footprints(selected) on ATProto 
 - Customize the styles of the page　
 - Inject JS to the page 
 - Pure web app running in your browser 

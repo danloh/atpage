@@ -214,7 +214,16 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_desc.set(event_target_value(&evt))
 				required
 			></textarea>
-		  <b class="text-start">"Select ATProto Services"</b>
+			<div class="flex items-center justify-between gap-2">
+			  <b class="text-start">"Select ATProto Services"</b>
+				<a
+					class="link link-hover text-xs text-primary"
+					href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
+					target="_blank"
+				>
+					"Submit Service"
+				</a>
+			</div>
 			{AT_SERVICES
 				.into_iter()
 				.map(|t| {
@@ -254,30 +263,8 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			  href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
 				target="_blank"
 			>
-				"Want more services available? submit here."
+				"Want more services available? submit please."
 		  </a>
-			<b class="text-start">"Customize styles of my atpage"</b>
-			<textarea
-				prop:value={val.style.unwrap_or_default()}
-				node_ref=style_ref
-				name="style"
-				id="style"
-				class="textarea h-full w-full"
-				placeholder="Customize the style/css of my atpage: e.g. body {background-color: blue;} .at-page {color: green;} ..."
-				on:input=move |evt| set_style.set(event_target_value(&evt))
-				required
-			></textarea>
-			<b class="text-start">"Inject script on my atpage"</b>
-			<textarea
-				prop:value={val.script.unwrap_or_default()}
-				node_ref=script_ref
-				name="script"
-				id="script"
-				class="textarea h-full w-full"
-				placeholder="Inject JavaScript"
-				on:input=move |evt| set_script.set(event_target_value(&evt))
-				required
-			></textarea>
 			<div class="flex items-center justify-between gap-2">
 			  <b class="text-start">"Links"</b>
 				<button
@@ -285,7 +272,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					title="Add Link"
 					on:click=move |_| { show_add.set(!show_add.get()); }
 				>
-					{move || if show_add.get() {"Cancel"} else {"Add"}}
+					{move || if show_add.get() {"Cancel"} else {"Add Link"}}
 				</button>
 			</div>
 			<Show when=move || { show_add.get() } fallback=|| "" >
@@ -301,6 +288,46 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					.collect_view()
 				}
 			</div>
+			<div class="flex items-center justify-between gap-2">
+			  <b class="text-start">"Customize styles of my atpage"</b>
+				<a
+					class="link link-hover text-xs text-primary"
+					href="https://github.com/danloh/atpage/tree/main/shared" 
+					target="_blank"
+				>
+					"Shared"
+				</a>
+			</div>
+			<textarea
+				prop:value={val.style.unwrap_or_default()}
+				node_ref=style_ref
+				name="style"
+				id="style"
+				class="textarea h-full w-full"
+				placeholder="Customize the style/css of my atpage: e.g. body {background-color: blue;} .at-page {color: green;} ..."
+				on:input=move |evt| set_style.set(event_target_value(&evt))
+				required
+			></textarea>
+			<div class="flex items-center justify-between gap-2">
+			  <b class="text-start">"Inject script on my atpage"</b>
+				<a
+					class="link link-hover text-xs text-primary"
+					href="https://github.com/danloh/atpage/tree/main/shared" 
+					target="_blank"
+				>
+					"Shared"
+				</a>
+			</div>
+			<textarea
+				prop:value={val.script.unwrap_or_default()}
+				node_ref=script_ref
+				name="script"
+				id="script"
+				class="textarea h-full w-full"
+				placeholder="Inject JavaScript"
+				on:input=move |evt| set_script.set(event_target_value(&evt))
+				required
+			></textarea>
 			<button
 				class="btn text-success mt-4"
 				disabled={disable_btn}
@@ -351,7 +378,7 @@ pub fn LinkForm(
 	let more_option = RwSignal::new(false);
 
 	view! {
-		<div class="card w-full h-full">
+		<div class="card w-full h-full mb-4">
 			<input
 				node_ref=name_ref
 				type="text"
@@ -404,24 +431,6 @@ pub fn LinkForm(
 			</Show>
 			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
 				<button
-					class="btn btn-xs text-warning"
-					disabled={disable_btn}
-					on:click=move |event| {
-						event.prevent_default();
-						spawn_local(async move {
-							disable_btn.set(true);
-							links.update(|lnks| {
-								let url = url_ref.get().unwrap().value();
-								lnks.retain(|l| l.url != url);
-							});
-							disable_btn.set(false);
-							show.set(false);
-						});
-					}
-				>
-					"Remove"
-				</button>
-				<button
 					class="btn btn-xs text-primary"
 					on:click=move |_| { more_option.set(!more_option.get()) }
 				>
@@ -468,11 +477,12 @@ pub fn LinkBox(
 		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-300 rounded">
 			<div class="w-full flex flex-wrap items-center justify-between gap-2">
 				<span class="text-start text-success">{link.name}</span>
-				<a href={link.url} target="_blank" class="link link-hover text-primary">
+				<a href={link.url} target="_blank" class="link link-hover text-sm text-primary">
 				  {link.url.clone()}
 				</a>
 				<button
-					class="btn btn-xs btn-ghost text-warning"
+					class="btn btn-xs btn-ghost text-warning" 
+					title="Remove Link"
 					on:click=move |event| {
 						event.prevent_default();
 						let url = url.clone();
@@ -487,9 +497,9 @@ pub fn LinkBox(
 					"X"
 				</button>
 			</div>
-			<div class="w-full text-sm opacity-75">{link.description}</div>
-			<div class="w-full text-sm opacity-75">{link.icon}</div>
-			<div class="w-full text-sm opacity-75">{link.style}</div>
+			<div class="w-full text-xs opacity-75">{link.description}</div>
+			<div class="w-full text-xs opacity-75">{link.icon}</div>
+			<div class="w-full text-xs opacity-75">{link.style}</div>
 		</div>
 	}
 }

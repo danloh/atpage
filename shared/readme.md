@@ -2,7 +2,7 @@ Here to share the styles and scripts of your atpage
 
 # How to share?
 
-Just put your style `.css` file in the folder: `/shared/styles` and script `.js` file in the folder `shared/scripts` and attach your atpage link to check the outcome. 
+Just put your style `.css` file in the folder: `/shared/styles` or script `.js` file in the folder `shared/scripts` and attach your atpage link to check the outcome. 
 
 # How to use? 
 

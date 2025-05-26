@@ -45,7 +45,23 @@ body {
   padding: auto;
 }
 
+.at-link-card {
+  padding: auto;
+}
+
 .at-ico {
+  padding: auto;
+}
+
+.at-desc {
+  padding: auto;
+}
+
+.at-name {
+  padding: auto;
+}
+
+.at-des {
   padding: auto;
 }
 
@@ -123,5 +139,9 @@ at-ctn-*,
 
 /* for specific link: 
 at-link-*,
+at-link-card-*,
 at-ico-*,
+at-desc-*,
+at-name-*,
+at-des-*,
 */
