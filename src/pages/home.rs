@@ -193,6 +193,27 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 
 	view! {
 		<div class="flex flex-col gap-2 w-full h-full mb-4">
+		  <b class="text-start hidden">"Title"</b>
+			<textarea
+				node_ref=title_ref
+				name="title"
+				id="title"
+				class="textarea font-bold w-full hidden"
+				prop:value={val.title.unwrap_or_default()}
+				placeholder="Title"
+				required
+			></textarea>
+			<b class="text-start">"Description"</b>
+			<textarea
+				prop:value={val.description.unwrap_or_default()}
+				node_ref=desc_ref
+				name="description"
+				id="description"
+				class="textarea h-full w-full"
+				placeholder="Description of my atpage..."
+				on:input=move |evt| set_desc.set(event_target_value(&evt))
+				required
+			></textarea>
 		  <b class="text-start">"Select ATProto Services"</b>
 			{AT_SERVICES
 				.into_iter()
@@ -235,28 +256,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			>
 				"Want more services available? submit here."
 		  </a>
-			<b class="text-start hidden">"Title"</b>
-			<textarea
-				node_ref=title_ref
-				name="title"
-				id="title"
-				class="textarea font-bold w-full hidden"
-				prop:value={val.title.unwrap_or_default()}
-				placeholder="Title"
-				required
-			></textarea>
-			<b class="text-start">"Description"</b>
-			<textarea
-				prop:value={val.description.unwrap_or_default()}
-				node_ref=desc_ref
-				name="description"
-				id="description"
-				class="textarea h-full w-full"
-				placeholder="Description of my atpage..."
-				on:input=move |evt| set_desc.set(event_target_value(&evt))
-				required
-			></textarea>
-			<b class="text-start">"Styles"</b>
+			<b class="text-start">"Customize styles of my atpage"</b>
 			<textarea
 				prop:value={val.style.unwrap_or_default()}
 				node_ref=style_ref
@@ -267,7 +267,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_style.set(event_target_value(&evt))
 				required
 			></textarea>
-			<b class="text-start">"Script"</b>
+			<b class="text-start">"Inject script on my atpage"</b>
 			<textarea
 				prop:value={val.script.unwrap_or_default()}
 				node_ref=script_ref
@@ -288,20 +288,19 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					{move || if show_add.get() {"Cancel"} else {"Add"}}
 				</button>
 			</div>
+			<Show when=move || { show_add.get() } fallback=|| "" >
+				<LinkForm links link=Default::default() show=show_add />
+			</Show>
 			<div class="flex flex-col items-center justify-center gap-2 w-full">
 				{move || links
 					.get()
 					.iter()
-					//.filter(predicate)
 					.map(|link| {
 						view! { <LinkBox links link=link.clone() /> }
 					})
 					.collect_view()
 				}
 			</div>
-			<Show when=move || { show_add.get() } fallback=|| "" >
-				<LinkForm links link=Default::default() show=show_add />
-			</Show>
 			<button
 				class="btn text-success mt-4"
 				disabled={disable_btn}
@@ -345,9 +344,11 @@ pub fn LinkForm(
 	let name_ref = NodeRef::<Input>::new();
 	let url_ref = NodeRef::<Input>::new();
 	let desc_ref = NodeRef::<Input>::new();
+	let icon_ref = NodeRef::<Input>::new();
 	let style_ref = NodeRef::<Textarea>::new();
 
 	let disable_btn = RwSignal::new(false);
+	let more_option = RwSignal::new(false);
 
 	view! {
 		<div class="card w-full h-full">
@@ -379,15 +380,28 @@ pub fn LinkForm(
 				prop:value={link.description.unwrap_or_default()}
 				required
 			/>
-			<textarea
-				node_ref=style_ref
-				name="style"
-				id="style"
-				class="textarea w-full hidden"
-				placeholder="style"
-				prop:value={link.style.unwrap_or_default()}
-				required
-			></textarea>
+			<Show when=move || { more_option.get() } fallback=|| "" >
+			  <div class="flex flex-col mt-1">
+					<input
+						node_ref=icon_ref
+						name="icon"
+						id="icon"
+						class="input w-full"
+						placeholder="Icon URL for the link"
+						prop:value={link.icon.clone().unwrap_or_default()}
+						required
+					/>
+					<textarea
+						node_ref=style_ref
+						name="style"
+						id="style"
+						class="textarea w-full"
+						placeholder="style of the link"
+						prop:value={link.style.clone().unwrap_or_default()}
+						required
+					></textarea>
+				</div>
+			</Show>
 			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
 				<button
 					class="btn btn-xs text-warning"
@@ -406,6 +420,12 @@ pub fn LinkForm(
 					}
 				>
 					"Remove"
+				</button>
+				<button
+					class="btn btn-xs text-primary"
+					on:click=move |_| { more_option.set(!more_option.get()) }
+				>
+					{move || if more_option.get() {"Less Options"} else {"More options"}}
 				</button>
 				<button
 					class="btn btn-xs text-success"
@@ -445,7 +465,7 @@ pub fn LinkBox(
 ) -> impl IntoView {
 	let url = link.url.clone();
 	view! {
-		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-200 rounded">
+		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-300 rounded">
 			<div class="w-full flex flex-wrap items-center justify-between gap-2">
 				<span class="text-start text-success">{link.name}</span>
 				<a href={link.url} target="_blank" class="link link-hover text-primary">
@@ -468,6 +488,8 @@ pub fn LinkBox(
 				</button>
 			</div>
 			<div class="w-full text-sm opacity-75">{link.description}</div>
+			<div class="w-full text-sm opacity-75">{link.icon}</div>
+			<div class="w-full text-sm opacity-75">{link.style}</div>
 		</div>
 	}
 }

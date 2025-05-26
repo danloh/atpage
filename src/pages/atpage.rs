@@ -69,24 +69,66 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 													.map(|link| {
 														let url = link.url.clone();
 														let name = link.name.clone();
-														view! {
-															<a
-																class={format!("link link-hover at-link at-link-{}", name)}
-																href={url}
-																title={
-																	link.description.map(|d|
-																		if d.trim().is_empty() { name.clone() } else { d }
-																	)
-																	.unwrap_or(name)
-																}
-															>
-															  <img
-																  class={format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name)}
-																  src={get_ico(&url)}
-																	alt={name.clone()}
-																	loading="lazy"
-																/>
-															</a>
+														let desc = link.description.map(|d|
+															if d.trim().is_empty() { name.clone() } else { d }
+														)
+														.unwrap_or_else(|| name.clone());
+														let (link_style, styled) = match link.style {
+															Some(s) if !s.trim().is_empty() => (s, true),
+															_ => (String::new(), false)
+														};
+														let link_icon = match link.icon {
+															Some(ico) if !ico.trim().is_empty() => ico,
+															_ => get_ico(&url)
+														};
+														let link_class = 
+														  format!("w-full flex gap-2 link link-hover at-link at-link-{name}");
+														let img_class = 
+														  format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name);
+
+														if styled {
+															view! {
+																<div class="w-full flex gap-2">
+																	<a
+																		class={link_class}
+																		style={link_style}
+																		href={url}
+																		title={desc}
+																	>
+																		<img
+																			class={img_class}
+																			src={link_icon}
+																			alt={name.clone()}
+																			loading="lazy"
+																		/>
+																		<div class={format!("flex gap-2 at-desc at-desc-{}", name)}>
+																			<span class={format!("at-name at-name-{}", name)}>
+																				{name.clone()}
+																			</span>
+																			<span class={format!("at-des at-des-{}", name)}>
+																				{desc.clone()}
+																			</span>
+																		</div>
+																	</a>
+																</div>
+															}
+															.into_any()
+														} else {
+															view! {
+																<a
+																	class={format!("link link-hover at-link at-link-{}", name)}
+																	href={url}
+																	title={desc}
+																>
+																	<img
+																		class={img_class}
+																		src={link_icon}
+																		alt={name.clone()}
+																		loading="lazy"
+																	/>
+																</a>
+															}
+															.into_any()
 														}
 													})
 													.collect_view()

@@ -23,19 +23,19 @@
           },
           "script": {
             "type": "string",
-            "description": "Injected JaveScript to atpage"
+            "description": "Injected JaveScript of the atpage"
           },
           "services": {
             "type": "array",
-            "description": "Record containing a list of atproto service to display",
+            "description": "list of atproto services to display",
             "items": {
               "type": "string",
-              "description": "name of at service"
+              "description": "name of the atproto service"
             }
           },
           "links": {
             "type": "array",
-            "description": "Record containing a list of links to display (TODO)",
+            "description": "a list of links to display",
             "items": {
               "type": "ref",
               "ref": "#link"
@@ -43,7 +43,7 @@
           },
           "follows": {
             "type": "array",
-            "description": "Record containing a list of follows to display (TODO)",
+            "description": "list of follows to display (TODO)",
             "items": {
               "type": "ref",
               "ref": "#follow"
@@ -54,12 +54,8 @@
     },
     "link": {
       "type": "object",
-      "description": "Represents a single link to display",
-      "required": [
-        "url",
-        "name",
-        "order"
-      ],
+      "description": "Represents a single link",
+      "required": ["url", "name"],
       "properties": {
         "url": {
           "type": "string"
@@ -79,7 +75,7 @@
         },
         "style": {
           "type": "string",
-          "description": "style of link: bgColor, bgImage, textColor, ..."
+          "description": "style of the link"
         },
         "createdAt": {
           "type": "integer",
@@ -89,11 +85,8 @@
     },
     "follow": {
       "type": "object",
-      "description": "Represents a single follow to display",
-      "required": [
-        "did",
-        "createdAt"
-      ],
+      "description": "Represents a single follow",
+      "required": ["did", "createdAt"],
       "properties": {
         "did": {
           "type": "string"
