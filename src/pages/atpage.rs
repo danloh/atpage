@@ -81,12 +81,14 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 															Some(ico) if !ico.trim().is_empty() => ico,
 															_ => get_ico(&url)
 														};
+														// no space allowed in class name
+														let cname = name.replace(" ", "");
 														let link_class = 
-														  format!("w-full flex gap-2 link link-hover at-link at-link-{name}");
+														  format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
 														let link_card_class = 
-														  format!("w-full flex gap-2 at-link-card at-link-card-{name}");
+														  format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
 														let img_class = 
-														  format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", name);
+														  format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
 
 														if styled {
 															view! {
@@ -103,11 +105,11 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 																			alt={name.clone()}
 																			loading="lazy"
 																		/>
-																		<div class={format!("flex gap-2 at-desc at-desc-{}", name)}>
-																			<span class={format!("at-name at-name-{}", name)}>
+																		<div class={format!("flex gap-2 at-desc at-desc-{}", cname)}>
+																			<span class={format!("at-name at-name-{}", cname)}>
 																				{name.clone()}
 																			</span>
-																			<span class={format!("at-des at-des-{}", name)}>
+																			<span class={format!("at-des at-des-{}", cname)}>
 																				{desc.clone()}
 																			</span>
 																		</div>
@@ -118,7 +120,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 														} else {
 															view! {
 																<a
-																	class={format!("link link-hover at-link at-link-{}", name)}
+																	class={format!("link link-hover at-link at-link-{}", cname)}
 																	href={url}
 																	title={desc}
 																>
@@ -201,7 +203,7 @@ pub fn AtBox(did: String, services: Vec<String>, profile: RwSignal<ProfileRes>) 
 
 #[component]
 pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
-	let kd = rec.kind;
+	let kd = rec.kind.replace(" ", "");
 
 	view! {
 		<div class={format!("w-full p-2 at-card at-card-{}", kd)}>

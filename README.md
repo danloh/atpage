@@ -1,7 +1,7 @@
 
 # atpage
 
-All footprints on ATProto into one customizable page. 
+Links and footprints on ATProto into one customizable page. 
 
 ## Features
 

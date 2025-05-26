@@ -450,6 +450,7 @@ pub fn LinkForm(
 									name: name_ref.get().unwrap().value(),
 									description: desc_ref.get().map(|d| d.value()),
 									style: style_ref.get().map(|s| s.value()),
+									icon: icon_ref.get().map(|s| s.value()),
 									..Default::default()
 								};
 								lnks.retain(|l| l.url != url);
@@ -499,7 +500,7 @@ pub fn LinkBox(
 			</div>
 			<div class="w-full text-xs opacity-75">{link.description}</div>
 			<div class="w-full text-xs opacity-75">{link.icon}</div>
-			<div class="w-full text-xs opacity-75">{link.style}</div>
+			<div class="w-full text-xs opacity-75 mt-2">{link.style}</div>
 		</div>
 	}
 }
