@@ -52,27 +52,13 @@ pub fn Home() -> impl IntoView {
 					</button>
 				</div>
 				<div class="flex items-center justify-center gap-4 mt-8 absolute bottom-8">
-					<a 
-						class="text-accent text-center link link-hover" 
-						href="https://bsky.app/profile/atpage.one" 
-						target="_blank" 
-						title="Bluesky" 
-					>
+					<a href="https://bsky.app/profile/atpage.one" target="_blank" title="Bluesky">
 						<img class="h-6 w-6 hover:scale-[110%]" src="/bluesky.svg" loading="lazy" />
 					</a>
-					<a 
-						class="text-secondary text-center link link-hover" 
-						href="/atpage.one" 
-						title="ATPage" 
-					>
+					<a href="/atpage.one" title="ATPage">
 						<img class="h-6 w-6 hover:scale-[110%]" src="/favicon.svg" loading="lazy" />
 					</a>
-					<a 
-						class="text-success text-center link link-hover" 
-						href="https://github.com/danloh/atpage" 
-						target="_blank" 
-						title="Source Code"
-					>
+					<a href="https://github.com/danloh/atpage" target="_blank" title="Source Code">
 						<img class="h-6 w-6 hover:scale-[110%]" src="/github.svg" loading="lazy" />
 					</a>
 				</div>
@@ -214,7 +200,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_desc.set(event_target_value(&evt))
 				required
 			></textarea>
-			<div class="flex items-center justify-between gap-2">
+			<div class="flex flex-wrap items-center justify-between gap-2">
 			  <b class="text-start">"Select ATProto Services"</b>
 				<a
 					class="link link-hover text-xs text-primary"
@@ -265,7 +251,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			>
 				"Want more services available? submit please."
 		  </a>
-			<div class="flex items-center justify-between gap-2">
+			<div class="flex flex-wrap items-center justify-between gap-2">
 			  <b class="text-start">"Links"</b>
 				<button
 					class="btn btn-xs btn-ghost rounded-sm p-1 m-1 text-success"
@@ -288,8 +274,8 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					.collect_view()
 				}
 			</div>
-			<div class="flex items-center justify-between gap-2">
-			  <b class="text-start">"Customize styles of my atpage"</b>
+			<div class="flex flex-wrap items-center justify-between gap-2">
+			  <b class="text-start">"Customize styles of my atpage(Optional)"</b>
 				<a
 					class="link link-hover text-xs text-primary"
 					href="https://github.com/danloh/atpage/tree/main/shared" 
@@ -308,8 +294,8 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				on:input=move |evt| set_style.set(event_target_value(&evt))
 				required
 			></textarea>
-			<div class="flex items-center justify-between gap-2">
-			  <b class="text-start">"Inject script on my atpage"</b>
+			<div class="flex flex-wrap items-center justify-between gap-2">
+			  <b class="text-start">"Inject script on my atpage(Optional)"</b>
 				<a
 					class="link link-hover text-xs text-primary"
 					href="https://github.com/danloh/atpage/tree/main/shared" 
@@ -414,7 +400,7 @@ pub fn LinkForm(
 						name="icon"
 						id="icon"
 						class="input w-full"
-						placeholder="Icon URL for the link"
+						placeholder="icon URL for the link"
 						prop:value={link.icon.clone().unwrap_or_default()}
 						required
 					/>
