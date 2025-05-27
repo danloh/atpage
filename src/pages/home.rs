@@ -17,8 +17,11 @@ pub fn Home() -> impl IntoView {
 		<div class="min-h-screen w-screen" style="background-color: #1a404f;">
 			<div class="flex flex-col items-center justify-center px-4 pt-8 mx-auto max-w-xl">
 				<h1 class="text-4xl text-center mt-8" style="color: #d2e823;">
-					"atpage: footprints on atproto, into one customizable page."
+					"atpage.one"
 				</h1>
+				<h2 class="text-2xl text-center mt-2" style="color: #d2e823;">
+					"Links and Footprints on atproto, into one customizable page."
+				</h2>
 				<p class="p-2" style="color: white;">
 					"One link in bio to help share everything you create on atproto"
 				</p>
@@ -207,7 +210,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
 					target="_blank"
 				>
-					"Submit Service"
+					"Add Service"
 				</a>
 			</div>
 			{AT_SERVICES
@@ -409,12 +412,15 @@ pub fn LinkForm(
 						name="style"
 						id="style"
 						class="textarea w-full"
-						placeholder="style of the link"
+						placeholder="style the link"
 						prop:value={link.style.clone().unwrap_or_default()}
 						required
 					></textarea>
 				</div>
 			</Show>
+			<span class="text-xs text-primary mt-2">
+			  "The link appears as an icon on ATPage by default, you can style it as a card, banner...."
+			</span>
 			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
 				<button
 					class="btn btn-xs text-primary"
