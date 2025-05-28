@@ -57,70 +57,44 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
 									<ProfileView profile=p_signal.get() />
 									<div class="flex flex-col items-center justify-center gap-2 at-view">
-										<div class="flex flex-col gap-2 w-full at-wrap">
-											<div
-												class="prose flex items-center justify-center p-2 at-desc"
-												inner_html={md2html(&res.description.unwrap_or_default()).html}
-											></div>
-											<div class="flex flex-wrap items-center justify-center gap-2 at-links">
-											  {res
-													.links
-													.into_iter()
-													.map(|link| {
-														let url = link.url.clone();
-														let name = link.name.clone();
-														let desc = link.description.map(|d|
-															if d.trim().is_empty() { name.clone() } else { d }
-														)
-														.unwrap_or_else(|| name.clone());
-														let (link_style, styled) = match link.style {
-															Some(s) if !s.trim().is_empty() => (s, true),
-															_ => (String::new(), false)
-														};
-														let link_icon = match link.icon {
-															Some(ico) if !ico.trim().is_empty() => ico,
-															_ => get_ico(&url)
-														};
-														// no space allowed in class name
-														let cname = name.replace(" ", "");
-														let link_class = 
-														  format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
-														let link_card_class = 
-														  format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
-														let img_class = 
-														  format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
+										<div
+											class="prose flex items-center justify-center p-2 at-description"
+											inner_html={md2html(&res.description.unwrap_or_default()).html}
+										/>
+										<div class="flex flex-wrap items-center justify-center gap-2 at-links">
+											{res
+												.links
+												.into_iter()
+												.map(|link| {
+													let url = link.url.clone();
+													let name = link.name.clone();
+													let desc = link.description.map(|d|
+														if d.trim().is_empty() { name.clone() } else { d }
+													)
+													.unwrap_or_else(|| name.clone());
+													let (link_style, styled) = match link.style {
+														Some(s) if !s.trim().is_empty() => (s, true),
+														_ => (String::new(), false)
+													};
+													let link_icon = match link.icon {
+														Some(ico) if !ico.trim().is_empty() => ico,
+														_ => get_ico(&url)
+													};
+													// no space allowed in class name
+													let cname = name.replace(" ", "");
+													let link_class = 
+														format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
+													let link_card_class = 
+														format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
+													let img_class = 
+														format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
 
-														if styled {
-															view! {
-																<div class={link_card_class}>
-																	<a
-																		class={link_class}
-																		style={link_style}
-																		href={url}
-																		title={desc}
-																	>
-																		<img
-																			class={img_class}
-																			src={link_icon}
-																			alt={name.clone()}
-																			loading="lazy"
-																		/>
-																		<div class={format!("flex gap-2 at-desc at-desc-{}", cname)}>
-																			<span class={format!("at-name at-name-{}", cname)}>
-																				{name.clone()}
-																			</span>
-																			<span class={format!("at-des at-des-{}", cname)}>
-																				{desc.clone()}
-																			</span>
-																		</div>
-																	</a>
-																</div>
-															}
-															.into_any()
-														} else {
-															view! {
+													if styled {
+														view! {
+															<div class={link_card_class}>
 																<a
-																	class={format!("link link-hover at-link at-link-{}", cname)}
+																	class={link_class}
+																	style={link_style}
 																	href={url}
 																	title={desc}
 																>
@@ -130,20 +104,44 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 																		alt={name.clone()}
 																		loading="lazy"
 																	/>
+																	<div class={format!("flex gap-2 at-desc at-desc-{}", cname)}>
+																		<span class={format!("at-name at-name-{}", cname)}>
+																			{name.clone()}
+																		</span>
+																		<span class={format!("at-des at-des-{}", cname)}>
+																			{desc.clone()}
+																		</span>
+																	</div>
 																</a>
-															}
-															.into_any()
+															</div>
 														}
-													})
-													.collect_view()
-											  }
-											</div>
-											<AtBox
-											  did=p_signal.get().did
-												services=res.services.clone()
-												profile=p_signal
-											/>
+														.into_any()
+													} else {
+														view! {
+															<a
+																class={format!("link link-hover at-link at-link-{}", cname)}
+																href={url}
+																title={desc}
+															>
+																<img
+																	class={img_class}
+																	src={link_icon}
+																	alt={name.clone()}
+																	loading="lazy"
+																/>
+															</a>
+														}
+														.into_any()
+													}
+												})
+												.collect_view()
+											}
 										</div>
+										<AtBox
+											did=p_signal.get().did
+											services=res.services.clone()
+											profile=p_signal
+										/>
 									</div>
 									<div class="my-4 at-btm">
 										<a href="/setup" class="link link-hover at-join">
