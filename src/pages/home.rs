@@ -240,7 +240,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 								}
 							/>
 							<label for={t.0}>
-							  {format!("{}: {} - ", t.0, t.1)}<a href={t.2} target="_blank">{t.2}</a>
+							  {format!("{}: {} - ", t.0, t.1)}<a class="link link-hover" href={t.2} target="_blank">{t.2}</a>
 							</label>
 						</div>
 					}
@@ -248,7 +248,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				.collect_view()
 			}
 			<a 
-			  class="link link-hover text-success text-xs" 
+			  class="link link-hover text-primary text-xs" 
 			  href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
 				target="_blank"
 			>
@@ -372,7 +372,8 @@ pub fn LinkForm(
 				node_ref=name_ref
 				type="text"
 				name="name"
-				id="name"
+				id="name" 
+				title="name"
 				class="input w-full"
 				value={link.name}
 				placeholder="name"
@@ -381,7 +382,8 @@ pub fn LinkForm(
 			<input
 				node_ref=url_ref
 				name="url"
-				id="url"
+				id="url" 
+				title="URL"
 				class="input w-full"
 				placeholder="URL"
 				prop:value={link.url}
@@ -390,46 +392,55 @@ pub fn LinkForm(
 			<input
 				node_ref=desc_ref
 				name="description"
-				id="description"
+				id="description" 
+				title="description"
 				class="input w-full"
 				placeholder="description"
 				prop:value={link.description.unwrap_or_default()}
-				required
 			/>
 			<Show when=move || { more_option.get() } fallback=|| "" >
 			  <div class="flex flex-col mt-1">
 					<input
 						node_ref=icon_ref
 						name="icon"
-						id="icon"
+						id="icon" 
+						title="icon URL"
 						class="input w-full"
 						placeholder="icon URL for the link"
 						prop:value={link.icon.clone().unwrap_or_default()}
-						required
 					/>
 					<textarea
 						node_ref=style_ref
 						name="style"
-						id="style"
+						id="style" 
+						title="style the link"
 						class="textarea w-full"
 						placeholder="style the link"
 						prop:value={link.style.clone().unwrap_or_default()}
-						required
 					></textarea>
 				</div>
 			</Show>
-			<span class="text-xs text-primary mt-2">
-			  "The link appears as an icon on ATPage by default, you can style it as a card, banner...."
-			</span>
-			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
+			<div class="flex items-center justify-start mt-2">
+				<span class="text-xs text-primary">
+					"The link appears as an icon on ATPage by default, you can style it as a card, banner"
+				</span>
+				<a 
+					class="link link-hover text-success text-xs" 
+					href="https://whtwnd.com/atpage.one/3lq6tq6bwiy2f" 
+					target="_blank"
+				>
+					" ...."
+				</a>
 				<button
-					class="btn btn-xs text-primary"
+					class="btn btn-xs btn-ghost text-xs text-primary mx-2"
 					on:click=move |_| { more_option.set(!more_option.get()) }
 				>
 					{move || if more_option.get() {"Less Options"} else {"More options"}}
 				</button>
+			</div>
+			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
 				<button
-					class="btn btn-xs text-success"
+					class="btn btn-sm text-success"
 					disabled={disable_btn}
 					on:click=move |event| {
 						event.prevent_default();
@@ -469,8 +480,8 @@ pub fn LinkBox(
 	view! {
 		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-300 rounded">
 			<div class="w-full flex flex-wrap items-center justify-between gap-2">
-				<span class="text-start text-success">{link.name}</span>
-				<a href={link.url} target="_blank" class="link link-hover text-sm text-primary">
+				<span class="text-start text-sm">{link.name}</span>
+				<a href={link.url} target="_blank" class="link link-hover text-xs">
 				  {link.url.clone()}
 				</a>
 				<button

@@ -68,10 +68,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 												.map(|link| {
 													let url = link.url.clone();
 													let name = link.name.clone();
-													let desc = link.description.map(|d|
-														if d.trim().is_empty() { name.clone() } else { d }
-													)
-													.unwrap_or_else(|| name.clone());
+													
 													let (link_style, styled) = match link.style {
 														Some(s) if !s.trim().is_empty() => (s, true),
 														_ => (String::new(), false)
@@ -96,7 +93,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 																	class={link_class}
 																	style={link_style}
 																	href={url}
-																	title={desc}
+																	title={name.clone()}
 																>
 																	<img
 																		class={img_class}
@@ -109,7 +106,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 																			{name.clone()}
 																		</span>
 																		<span class={format!("at-des at-des-{}", cname)}>
-																			{desc.clone()}
+																			{link.description.unwrap_or_default()}
 																		</span>
 																	</div>
 																</a>
@@ -121,7 +118,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 															<a
 																class={format!("link link-hover at-link at-link-{}", cname)}
 																href={url}
-																title={desc}
+																title={name.clone()}
 															>
 																<img
 																	class={img_class}
