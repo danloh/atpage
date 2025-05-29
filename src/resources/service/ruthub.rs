@@ -1,3 +1,6 @@
+//! Tracker for book, movie, ... 
+
+
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -134,7 +137,7 @@ pub struct ItemValue {
 	pub skeet: Option<String>,
 }
 
-pub async fn get_item_record(id: &str, did: &str, serv: &str) -> Option<Item> {
+async fn get_item_record(id: &str, did: &str, serv: &str) -> Option<Item> {
 	match get_record("com.ruthub.item", id, &serv, did).await {
 		Ok(raw_data) => match serde_json::from_str::<ItemResp>(&raw_data) {
 			Ok(data_res) => {

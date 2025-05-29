@@ -1,3 +1,7 @@
+//! oekaki BBS
+//! lexicons: 
+//! https://github.com/shinolabs/PinkSea/blob/master/PinkSea.Lexicons/com/shinolabs/pinksea/oekaki.json
+
 use serde::{Deserialize, Serialize};
 
 use crate::{

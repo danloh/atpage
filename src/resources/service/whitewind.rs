@@ -1,3 +1,7 @@
+//! blog 
+//! lexicons: 
+//! https://github.com/whtwnd/whitewind-blog/blob/main/lexicons/com/whtwnd/blog/entry.json
+
 use serde::{Deserialize, Serialize};
 
 use crate::{

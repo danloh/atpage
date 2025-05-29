@@ -71,12 +71,13 @@ pub fn Home() -> impl IntoView {
 }
 
 /// (name, category, domain)
-pub const AT_SERVICES: [(&str, &str, &str); 5] = [
+pub const AT_SERVICES: [(&str, &str, &str); 6] = [
 	("frontpage", "Links", "https://frontpage.fyi"),
 	("pinksea", "Oekaki", "https://pinksea.art"), 
 	("ruthub", "Tracker", "https://ruthub.com"),
 	("whitewind", "Blog", "https://whtwnd.com"), 
 	("smokesignal", "Events", "https://smokesignal.events"), 
+	("grain", "Photo sharing", "https://grain.social"), 
 ];
 
 /// endpoint `/setup`
@@ -190,7 +191,6 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				class="textarea font-bold w-full hidden"
 				prop:value={val.title.unwrap_or_default()}
 				placeholder="Title"
-				required
 			></textarea>
 			<b class="text-start">"Description"</b>
 			<textarea
@@ -201,18 +201,8 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				class="textarea h-full w-full"
 				placeholder="Description of my atpage..."
 				on:input=move |evt| set_desc.set(event_target_value(&evt))
-				required
 			></textarea>
-			<div class="flex flex-wrap items-center justify-between gap-2">
-			  <b class="text-start">"Select ATProto Services"</b>
-				<a
-					class="link link-hover text-xs text-primary"
-					href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
-					target="_blank"
-				>
-					"Add Service"
-				</a>
-			</div>
+			<b class="text-start">"Select ATProto Services"</b>
 			{AT_SERVICES
 				.into_iter()
 				.map(|t| {

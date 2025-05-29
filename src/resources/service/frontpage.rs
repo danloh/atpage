@@ -1,3 +1,7 @@
+//! Federated link aggregator
+//! lexicons: 
+//! https://github.com/likeandscribe/frontpage/blob/main/lexicons/fyi/unravel/frontpage/post.json
+
 use serde::{Deserialize, Serialize};
 
 use crate::{

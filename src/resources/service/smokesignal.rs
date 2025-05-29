@@ -1,3 +1,7 @@
+//! An event and RSVP management application.
+//! lexicons: 
+//! https://tangled.sh/@smokesignal.events/smokesignal/blob/main/src/atproto/lexicon/events_smokesignal_calendar_event.rs
+
 use serde::{Deserialize, Serialize};
 
 use crate::{
