@@ -57,7 +57,8 @@ pub struct FavValue {
 	pub createdAt: String,
 }
 
-// TODO, leverage cursor for pagination
+// TODO, leverage cursor for pagination 
+// maybe FIXME: Cannot get a photo item right now
 pub async fn get_grain_records(
 	did: &str,
 	serv: &str,

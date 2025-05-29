@@ -46,13 +46,29 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 			{move || match atpage.get() {
 				Some(res_) => {
 					if let Some(res) = res_ {
-						let style_css = match res.style {
-							Some(s) if !s.trim().is_empty() => s,
-							_ => DEFAULT_STYLE.to_string()
+						let (is_src, style_css) = match res.style {
+							Some(s) if !s.trim().is_empty() => {
+								(s.starts_with("https://") && s.ends_with(".css"), s)
+							}
+							_ => (false, DEFAULT_STYLE.to_string())
+						};
+						let (is_link, js_script) = match res.script {
+							Some(s) if !s.trim().is_empty() => {
+								(s.starts_with("https://"), s)
+							}
+							_ => (false, "".to_string())
 						};
 						view! {
-							<Style>{style_css}</Style>
-							<Script>{res.script.unwrap_or_default()}</Script>
+							{if is_src {
+								view! { <Stylesheet href={style_css} /> }.into_any()
+							} else {
+								view! { <Style>{style_css}</Style> }.into_any()
+							}}
+							{if is_link {
+								view! { <Link rel="preload" href={js_script} as_="script" /> }.into_any()
+							} else {
+								view! { <Script>{js_script}</Script> }.into_any()
+							}}
 							<div class="min-h-screen w-screen at-screen">
 								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
 									<ProfileView profile=p_signal.get() />
