@@ -172,6 +172,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
   let services: RwSignal<Vec<String>> = RwSignal::new(val.services);
 	let disable_btn = RwSignal::new(false);
 	let show_add = RwSignal::new(false);
+	let link_form: RwSignal<LinkEntry> = RwSignal::new(LinkEntry::default());
 
 	let UseTextareaAutosizeReturn { content: _, set_content: set_desc, trigger_resize: _ } =
 		use_textarea_autosize(desc_ref);
@@ -250,20 +251,23 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				<button
 					class="btn btn-xs btn-ghost rounded-sm p-1 m-1 text-success"
 					title="Add Link"
-					on:click=move |_| { show_add.set(!show_add.get()); }
+					on:click=move |_| { 
+						show_add.set(!show_add.get()); 
+						link_form.set(Default::default());
+					}
 				>
 					{move || if show_add.get() {"Cancel"} else {"Add Link"}}
 				</button>
 			</div>
 			<Show when=move || { show_add.get() } fallback=|| "" >
-				<LinkForm links link=Default::default() show=show_add />
+				<LinkForm links link=link_form.get() show=show_add />
 			</Show>
 			<div class="flex flex-col items-center justify-center gap-2 w-full">
 				{move || links
 					.get()
 					.iter()
 					.map(|link| {
-						view! { <LinkBox links link=link.clone() /> }
+						view! { <LinkBox links link=link.clone() link_form show_add /> }
 					})
 					.collect_view()
 				}
@@ -278,13 +282,16 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					"Shared"
 				</a>
 			</div>
+			<span class="text-xs text-primary">
+				"e.g. body {color:green;} .at-card {max-width:520px;padding:6px;margin:10px;}"
+			</span>
 			<textarea
 				prop:value={val.style.unwrap_or_default()}
 				node_ref=style_ref
 				name="style"
 				id="style"
 				class="textarea h-full w-full"
-				placeholder="Customize the style/css of my atpage: e.g. body {background-color: blue;} .at-page {color: green;} ..."
+				placeholder="Customize the style/css of my atpage"
 				on:input=move |evt| set_style.set(event_target_value(&evt))
 				required
 			></textarea>
@@ -386,29 +393,32 @@ pub fn LinkForm(
 				id="description" 
 				title="description"
 				class="input w-full"
-				placeholder="description"
+				placeholder="description(Optional)"
 				prop:value={link.description.unwrap_or_default()}
+			/>
+			<input
+				node_ref=icon_ref
+				name="icon"
+				id="icon" 
+				title="icon URL"
+				class="input w-full"
+				placeholder="ICON URL for the link(Optional)"
+				prop:value={link.icon.clone().unwrap_or_default()}
 			/>
 			<Show when=move || { more_option.get() } fallback=|| "" >
 			  <div class="flex flex-col mt-1">
-					<input
-						node_ref=icon_ref
-						name="icon"
-						id="icon" 
-						title="icon URL"
-						class="input w-full"
-						placeholder="icon URL for the link"
-						prop:value={link.icon.clone().unwrap_or_default()}
-					/>
+				  <span class="text-xs text-primary">
+					  "Style the link, e.g. - padding: 10px 18px; background-color: blue; color: white;"
+				  </span>
 					<textarea
 						node_ref=style_ref
 						name="style"
 						id="style" 
-						title="style the link"
+						title="style the link mt-1"
 						class="textarea w-full"
-						placeholder="style the link"
+						placeholder="style the link as banner, card..."
 						prop:value={link.style.clone().unwrap_or_default()}
-					></textarea>
+					/>
 				</div>
 			</Show>
 			<div class="flex items-center justify-start mt-2">
@@ -466,12 +476,28 @@ pub fn LinkForm(
 pub fn LinkBox(
 	links: RwSignal<Vec<LinkEntry>>,
 	link: LinkEntry,
+	link_form: RwSignal<LinkEntry>,
+	show_add: RwSignal<bool>,
 ) -> impl IntoView {
 	let url = link.url.clone();
+	let link0 = link.clone();
 	view! {
 		<div class="w-full flex flex-col items-center justify-center p-2 bg-base-300 rounded">
 			<div class="w-full flex flex-wrap items-center justify-between gap-2">
-				<span class="text-start text-sm">{link.name}</span>
+				<div class="flex items-center justify-start">
+				  <span class="text-start text-sm">{link.name}</span>
+					<button
+						class="btn btn-xs btn-ghost text-success" 
+						title="Edit Link"
+						on:click=move |event| {
+							event.prevent_default();
+							link_form.set(link0.clone());
+							show_add.set(true);
+						}
+					>
+						"⋮"
+					</button>
+				</div>
 				<a href={link.url} target="_blank" class="link link-hover text-xs">
 				  {link.url.clone()}
 				</a>

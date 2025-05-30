@@ -77,7 +77,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 											class="prose flex items-center justify-center p-2 at-description"
 											inner_html={md2html(&res.description.unwrap_or_default()).html}
 										/>
-										<div class="flex flex-wrap items-center justify-center gap-2 at-links">
+										<div class="w-full flex flex-wrap items-center justify-center gap-2 at-links">
 											{res
 												.links
 												.into_iter()
