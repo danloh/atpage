@@ -271,7 +271,7 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 				}
 			</div>
 			<div
-				class={format!("flex-1 prose no-scrollbar at-ctn at-ctn-{}", kd)}
+				class={format!("flex-1 w-full prose no-scrollbar at-ctn at-ctn-{}", kd)}
 				style="max-height: 240px; overflow: auto"
 				inner_html={md2html(&rec.content).html}
 			></div>

@@ -34,6 +34,8 @@
     padding: 4px 8px;
     width: 100%;
     margin: 0 0 !important; 
+    white-space: pre-wrap;
+    /* text-wrap: balance; */
   }
   .language-tag {
     background-color: #facc15;
