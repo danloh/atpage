@@ -7,7 +7,8 @@ use super::{
 	record::{get_record, PutResp},
 	service::{
 		frontpage::get_frontpage_records, grain::get_grain_records, pinksea::get_pinksea_records, 
-		ruthub::get_ruthub_records, smokesignal::get_smokesignal_records, whitewind::get_wnd_records
+		recipe::get_recipe_records, ruthub::get_ruthub_records, 
+		smokesignal::get_smokesignal_records, whitewind::get_wnd_records
 	},
 };
 
@@ -150,6 +151,10 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 		if service == "grain" {
 			let (mut grains, _g_cur) = get_grain_records(&did, &serv, None).await;
 			vec.append(&mut grains);
+		}
+		if service == "recipe" {
+			let (mut recipes, _rc_cur) = get_recipe_records(&did, &serv, None).await;
+			vec.append(&mut recipes);
 		}
 	}
 
