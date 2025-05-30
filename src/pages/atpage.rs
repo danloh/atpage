@@ -310,35 +310,35 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 	let txt = RwSignal::new(text);
 
 	view! {
-		<details class="dropdown dropdown-end z-50 at-share">
-		  <summary class="btn btn-xs btn-ghost m-1">
+		<details class="dropdown dropdown-end at-share">
+		  <summary class="btn btn-xs btn-ghost">
 				<Icon icon=SHARE_NETWORK size="18" />
 			</summary>
-			<ul class="menu dropdown-content p-2 bg-base-300 shadow-sm rounded-sm z-55 w-32">
+			<ul class="menu dropdown-content p-2 bg-base-300 rounded-sm z-50 w-32">
 				<div class="flex flex-col h-full overflow-y-auto no-scrollbar">
 					<div class="flex flex-col items-start justify-center gap-2">
 					  <button
-						  class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+						  class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
 							style="color: #AE2983;"
 	            on:click=move |_| {
 								let clipboard = window().navigator().clipboard();
 								let _ = clipboard.write_text(&txt.get());
 							}
 						>
-							<Icon icon=COPY size="18px"/> "Copy"
+							<Icon icon=COPY size="18px"/> " Copy"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
 							style="color: #AE2983;"
 							on:click=move |_| { 
 								let share_url = format!("https://bsky.app/intent/compose?text={}", txt.get());
 								_ = window().open_with_url(&share_url);
 							}
 						>
-							<Icon icon=BUTTERFLY size="18px"/> "Bluesky"
+							<Icon icon=BUTTERFLY size="18px"/> " Bluesky"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
 							style="color: #AE2983;"
 							on:click=move |_| { 
 								let share_url = format!(
@@ -347,10 +347,10 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 								_ = window().open_with_url(&share_url);
 							}
 						>
-							<Icon icon=LINKEDIN_LOGO size="18px"/> "LinkedIn"
+							<Icon icon=LINKEDIN_LOGO size="18px"/> " LinkedIn"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
 							style="color: #AE2983;"
 							on:click=move |_| { 
 								let share_url = format!(
@@ -359,10 +359,10 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 								_ = window().open_with_url(&share_url);
 							}
 						>
-							<Icon icon=FACEBOOK_LOGO size="18px"/> "Facebook"
+							<Icon icon=FACEBOOK_LOGO size="18px"/> " Facebook"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
 							style="color: #AE2983;"
 							on:click=move |_| { 
 								let share_url = format!(
@@ -371,7 +371,7 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 								_ = window().open_with_url(&share_url);
 							}
 						>
-							<Icon icon=TWITTER_LOGO size="18px"/> "Twitter"
+							<Icon icon=TWITTER_LOGO size="18px"/> " Twitter"
 						</button>
 					</div>
 				</div>
