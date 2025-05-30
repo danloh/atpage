@@ -1,9 +1,11 @@
 body {
   background-color: #23383a;
 }
+.at-page {
+  max-width: 520px;
+}
 .at-card {    
   position: relative;
-  max-width: 520px;
   padding: 16px;
   margin: 10px auto;
   background: lightblue;

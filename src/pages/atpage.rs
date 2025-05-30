@@ -1,6 +1,7 @@
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::hooks::use_params_map;
+use phosphor_leptos::{Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, TWITTER_LOGO};
 
 use crate::helper::md::md2html;
 use crate::helper::utils::{get_ico, ts_to_dt};
@@ -95,20 +96,19 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 													};
 													// no space allowed in class name
 													let cname = name.replace(" ", "");
-													let link_class = 
-														format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
 													let link_card_class = 
 														format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
+													let link_class = 
+														format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
 													let img_class = 
 														format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
 
 													if styled {
 														view! {
-															<div class={link_card_class}>
+															<div class={link_card_class} style={link_style}>
 																<a
 																	class={link_class}
-																	style={link_style}
-																	href={url}
+																	href={url.clone()}
 																	title={name.clone()}
 																>
 																	<img
@@ -126,6 +126,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 																		</span>
 																	</div>
 																</a>
+																<ShareBtn text={url} />
 															</div>
 														}
 														.into_any()
@@ -246,6 +247,7 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 				>
 					{format!("@{}", kd)}
 				</a>
+				<ShareBtn text={rec.link.clone()} />
 			</div>
 			<div class={format!("flex items-center justify-start gap-2 at-title at-title-{}", kd)}>
 				<a
@@ -298,7 +300,83 @@ pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 					.unwrap_or_else(|| profile.handle.clone())
 				}
 			</a>
+			<ShareBtn text={format!("https://atpage.one/{}", profile.handle.clone())} />
 		</div>
+	}
+}
+
+#[component]
+pub fn ShareBtn(text: String) -> impl IntoView {
+	let txt = RwSignal::new(text);
+
+	view! {
+		<details class="dropdown dropdown-end z-50 at-share">
+		  <summary class="btn btn-xs btn-ghost m-1">
+				<Icon icon=SHARE_NETWORK size="18" />
+			</summary>
+			<ul class="menu dropdown-content p-2 bg-base-300 shadow-sm rounded-sm z-55 w-32">
+				<div class="flex flex-col h-full overflow-y-auto no-scrollbar">
+					<div class="flex flex-col items-start justify-center gap-2">
+					  <button
+						  class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							style="color: #AE2983;"
+	            on:click=move |_| {
+								let clipboard = window().navigator().clipboard();
+								let _ = clipboard.write_text(&txt.get());
+							}
+						>
+							<Icon icon=COPY size="18px"/> "Copy"
+						</button>
+						<button
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							style="color: #AE2983;"
+							on:click=move |_| { 
+								let share_url = format!("https://bsky.app/intent/compose?text={}", txt.get());
+								_ = window().open_with_url(&share_url);
+							}
+						>
+							<Icon icon=BUTTERFLY size="18px"/> "Bluesky"
+						</button>
+						<button
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							style="color: #AE2983;"
+							on:click=move |_| { 
+								let share_url = format!(
+									"https://www.linkedin.com/sharing/share-offsite/?url={}", txt.get()
+								);
+								_ = window().open_with_url(&share_url);
+							}
+						>
+							<Icon icon=LINKEDIN_LOGO size="18px"/> "LinkedIn"
+						</button>
+						<button
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							style="color: #AE2983;"
+							on:click=move |_| { 
+								let share_url = format!(
+									"https://www.facebook.com/sharer.php?u={}", txt.get()
+								);
+								_ = window().open_with_url(&share_url);
+							}
+						>
+							<Icon icon=FACEBOOK_LOGO size="18px"/> "Facebook"
+						</button>
+						<button
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1" 
+							style="color: #AE2983;"
+							on:click=move |_| { 
+								let share_url = format!(
+									"https://x.com/intent/tweet?text={}", txt.get()
+								);
+								_ = window().open_with_url(&share_url);
+							}
+						>
+							<Icon icon=TWITTER_LOGO size="18px"/> "Twitter"
+						</button>
+					</div>
+				</div>
+			</ul>
+		</details>
 	}
 }
 
@@ -306,8 +384,10 @@ const DEFAULT_STYLE: &str = "
 	body {
 		background-color: #fff8e3; 
 	}
+	.at-page {
+	  max-width: 520px;
+	}
 	.at-card {    
-		max-width: 520px;
 		padding: 10px;
 		margin: 5px auto;
 		background: #dee9de;
