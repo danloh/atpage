@@ -157,7 +157,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 											profile=p_signal
 										/>
 									</div>
-									<div class="w-full my-4 at-btm">
+									<div class="w-full flex flex-wrap items-center justify-center my-4 at-btm">
 										<a href="/setup" class="link link-hover at-join">
 											{format!(
 												"Join {} on ATPage",

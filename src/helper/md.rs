@@ -123,7 +123,7 @@ pub fn md2html(input: &str) -> HTMLOutput {
 		ev
 	});
 
-	html::write_html_io(Cursor::new(&mut output), stream).unwrap();
+	html::write_html_io(Cursor::new(&mut output), stream).unwrap_or(());
 
 	let res =
 		String::from_utf8(output).unwrap_or_else(|_| String::from("Failed to render Markdown"));
