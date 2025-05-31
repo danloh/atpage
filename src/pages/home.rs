@@ -1,11 +1,11 @@
-use leptos::prelude::*;
 use leptos::html::{Input, Textarea};
+use leptos::prelude::*;
 use leptos::task::spawn_local;
 use leptos_meta::Title;
 use leptos_use::{use_textarea_autosize, UseTextareaAutosizeReturn};
 
 use crate::helper::utils::go_to;
-use crate::resources::atpage::{fetch_atpage, put_atpage_record, LinkEntry, AtPageValue};
+use crate::resources::atpage::{fetch_atpage, put_atpage_record, AtPageValue, LinkEntry};
 use crate::resources::auth::{get_profile, use_auth};
 
 #[component]
@@ -26,12 +26,12 @@ pub fn Home() -> impl IntoView {
 					"One link in bio to help share everything you create on atproto"
 				</p>
 				<div class="flex items-center justify-center gap-2 w-full mt-4">
-					<input 
-						node_ref=handle_ref 
-						class="input input-bordered " 
-						placeholder="/handle" 
+					<input
+						node_ref=handle_ref
+						class="input input-bordered "
+						placeholder="/handle"
 					/>
-					<button 
+					<button
 					  class="w-12 btn rounded"
 						on:click=move |_| {
 							let handle = handle_ref.get().unwrap().value();
@@ -44,7 +44,7 @@ pub fn Home() -> impl IntoView {
 					>
 						"View"
 					</button>
-					<button 
+					<button
 					  class="w-16 btn rounded"
 						style="background-color: #d2e823;"
 						on:click=move |_| {
@@ -73,12 +73,12 @@ pub fn Home() -> impl IntoView {
 /// (name, category, domain)
 pub const AT_SERVICES: [(&str, &str, &str); 7] = [
 	("frontpage", "Link aggregator", "https://frontpage.fyi"),
-	("pinksea", "Oekaki BBS", "https://pinksea.art"), 
+	("pinksea", "Oekaki BBS", "https://pinksea.art"),
 	("ruthub", "Tracker", "https://ruthub.com"),
-	("whitewind", "Blog", "https://whtwnd.com"), 
-	("smokesignal", "Events", "https://smokesignal.events"), 
-	("grain", "Photo sharing", "https://grain.social"), 
-	("recipe", "Recipe sharing", "https://recipe.exchange"), 
+	("whitewind", "Blog", "https://whtwnd.com"),
+	("smokesignal", "Events", "https://smokesignal.events"),
+	("grain", "Photo sharing", "https://grain.social"),
+	("recipe", "Recipe sharing", "https://recipe.exchange"),
 ];
 
 /// endpoint `/setup`
@@ -89,30 +89,28 @@ pub fn SetupPage() -> impl IntoView {
 		go_to("/login?to=/setup");
 	}
 
-	let profile = LocalResource::new(
-		move || get_profile(auth.get().handle)
-	);
+	let profile = LocalResource::new(move || get_profile(auth.get().handle));
 
 	view! {
 		<Title text="Setup atpage" />
 		<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl">
 			<Suspense fallback=move || "Loading" >
 				{move || match profile.get() {
-					Some(p) => { 
+					Some(p) => {
 						match p {
 							Ok(profile) => {
-								view! { 
+								view! {
 									<div class="flex flex-col gap-2 w-full mb-4">
 										<div class="flex flex-col items-center justify-center gap-2 mb-4">
 											<div class="flex flex-wrap items-center justify-start gap-2">
-												<img 
-													class="h-4 w-4 rounded" 
-													src={profile.avatar.clone().unwrap_or_default()} 
-													loading="lazy" 
+												<img
+													class="h-4 w-4 rounded"
+													src={profile.avatar.clone().unwrap_or_default()}
+													loading="lazy"
 												/>
-												<a 
-													href={format!("https://bsky.app/profile/{}", profile.handle.clone())} 
-													target="_blank" 
+												<a
+													href={format!("https://bsky.app/profile/{}", profile.handle.clone())}
+													target="_blank"
 													class="link link-hover"
 												>
 													{
@@ -143,15 +141,13 @@ pub fn SetupPage() -> impl IntoView {
 
 #[component]
 pub fn SetupWrap(did: String) -> impl IntoView {
-	let atpage = LocalResource::new(
-		move || fetch_atpage(did.clone())
-	);
+	let atpage = LocalResource::new(move || fetch_atpage(did.clone()));
 
 	view! {
 		<div class="flex flex-col items-center justify-center">
 			<Suspense fallback=move || "Loading" >
 				{move || match atpage.get() {
-					Some(val) => { 
+					Some(val) => {
 						view! { <SetupForm val=val.unwrap_or_default() /> }.into_any()
 					}
 					None => "".into_any()
@@ -169,14 +165,14 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 	let script_ref = NodeRef::<Textarea>::new();
 
 	let links: RwSignal<Vec<LinkEntry>> = RwSignal::new(val.links);
-  let services: RwSignal<Vec<String>> = RwSignal::new(val.services);
+	let services: RwSignal<Vec<String>> = RwSignal::new(val.services);
 	let disable_btn = RwSignal::new(false);
 	let show_add = RwSignal::new(false);
 	let link_form: RwSignal<LinkEntry> = RwSignal::new(LinkEntry::default());
 
 	let UseTextareaAutosizeReturn { content: _, set_content: set_desc, trigger_resize: _ } =
 		use_textarea_autosize(desc_ref);
-	
+
 	let UseTextareaAutosizeReturn { content: _, set_content: set_style, trigger_resize: _ } =
 		use_textarea_autosize(style_ref);
 
@@ -210,10 +206,10 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				.map(|t| {
 					view! {
 						<div class="flex flex-wrap items-center justify-start gap-2">
-							<input 
-								type="checkbox" 
-								class="checkbox" 
-								value={t.0} 
+							<input
+								type="checkbox"
+								class="checkbox"
+								value={t.0}
 								checked={move || services.get().contains(&t.0.to_string())}
 								on:input=move |evt| {
 									let checked = event_target_checked(&evt);
@@ -239,9 +235,9 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				})
 				.collect_view()
 			}
-			<a 
-			  class="link link-hover text-primary text-xs" 
-			  href="https://github.com/danloh/atpage/issues/new?template=new_service.md" 
+			<a
+			  class="link link-hover text-primary text-xs"
+			  href="https://github.com/danloh/atpage/issues/new?template=new_service.md"
 				target="_blank"
 			>
 				"Want more services available? submit please."
@@ -251,8 +247,8 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				<button
 					class="btn btn-xs btn-ghost rounded-sm p-1 m-1 text-success"
 					title="Add Link"
-					on:click=move |_| { 
-						show_add.set(!show_add.get()); 
+					on:click=move |_| {
+						show_add.set(!show_add.get());
 						link_form.set(Default::default());
 					}
 				>
@@ -276,21 +272,24 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			  <b class="text-start">"Customize styles of my atpage(Optional)"</b>
 				<a
 					class="link link-hover text-xs text-primary"
-					href="https://github.com/danloh/atpage/tree/main/shared" 
+					href="https://github.com/danloh/atpage/tree/main/shared"
 					target="_blank"
 				>
 					"Shared"
 				</a>
 			</div>
-			<span class="text-xs text-primary">
-				"e.g. body {color:green;} .at-page {max-width:520px;} .at-card {padding:6px;margin:5px;}"
+			<span class="text-sm text-primary">
+				"Blank means default style or Customize: can copy the below snippet and edit"
 			</span>
+			<code class="text-xs my-1">
+				".at-page {max-width:520px;} .at-card {padding:6px;margin:5px;background:#fff8e3;}"
+			</code>
 			<textarea
 				prop:value={val.style.unwrap_or_default()}
 				node_ref=style_ref
 				name="style"
 				id="style"
-				class="textarea h-full w-full"
+				class="textarea h-full w-full code-box"
 				placeholder="Customize the style/css of my atpage"
 				on:input=move |evt| set_style.set(event_target_value(&evt))
 				required
@@ -299,7 +298,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 			  <b class="text-start">"Inject script on my atpage(Optional)"</b>
 				<a
 					class="link link-hover text-xs text-primary"
-					href="https://github.com/danloh/atpage/tree/main/shared" 
+					href="https://github.com/danloh/atpage/tree/main/shared"
 					target="_blank"
 				>
 					"Shared"
@@ -310,7 +309,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				node_ref=script_ref
 				name="script"
 				id="script"
-				class="textarea h-full w-full"
+				class="textarea h-full w-full code-box"
 				placeholder="Inject JavaScript"
 				on:input=move |evt| set_script.set(event_target_value(&evt))
 				required
@@ -335,7 +334,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 						// gloo::console::log!("value: ", format!("{:?}", new_data));
 						let auth = use_auth("/setup");
 						_ = put_atpage_record(auth.get(), &new_data).await;
-						
+
 						disable_btn.set(false);
 						window()
 						  .open_with_url_and_target(&format!("/{}", auth.get().handle), "_self")
@@ -370,7 +369,7 @@ pub fn LinkForm(
 				node_ref=name_ref
 				type="text"
 				name="name"
-				id="name" 
+				id="name"
 				title="name"
 				class="input w-full"
 				value={link.name}
@@ -380,7 +379,7 @@ pub fn LinkForm(
 			<input
 				node_ref=url_ref
 				name="url"
-				id="url" 
+				id="url"
 				title="URL"
 				class="input w-full"
 				placeholder="URL"
@@ -390,7 +389,7 @@ pub fn LinkForm(
 			<input
 				node_ref=desc_ref
 				name="description"
-				id="description" 
+				id="description"
 				title="description"
 				class="input w-full"
 				placeholder="description(Optional)"
@@ -399,7 +398,7 @@ pub fn LinkForm(
 			<input
 				node_ref=icon_ref
 				name="icon"
-				id="icon" 
+				id="icon"
 				title="icon URL"
 				class="input w-full"
 				placeholder="ICON URL for the link(Optional)"
@@ -407,15 +406,18 @@ pub fn LinkForm(
 			/>
 			<Show when=move || { more_option.get() } fallback=|| "" >
 			  <div class="flex flex-col mt-1">
-				  <span class="text-xs text-primary">
-					  "Style the link, e.g. - padding: 10px 18px; background-color: blue; color: white;"
+				  <span class="text-sm text-primary my-1">
+					  "Style the Link: can copy the below snippet and edit"
 				  </span>
+					<code class="text-xs my-1">
+					  "padding: 10px 18px; background-color: blue; color: white; border-radius: 5%;"
+				  </code>
 					<textarea
 						node_ref=style_ref
 						name="style"
-						id="style" 
+						id="style"
 						title="style the link mt-1"
-						class="textarea w-full"
+						class="textarea w-full code-box"
 						placeholder="style the link as banner, card..."
 						prop:value={link.style.clone().unwrap_or_default()}
 					/>
@@ -425,9 +427,9 @@ pub fn LinkForm(
 				<span class="text-xs text-primary">
 					"The link appears as an icon on ATPage by default, you can style it as a card, banner"
 				</span>
-				<a 
-					class="link link-hover text-success text-xs" 
-					href="https://whtwnd.com/atpage.one/3lq6tq6bwiy2f" 
+				<a
+					class="link link-hover text-success text-xs"
+					href="https://whtwnd.com/atpage.one/3lq6tq6bwiy2f"
 					target="_blank"
 				>
 					" ...."
@@ -487,7 +489,7 @@ pub fn LinkBox(
 				<div class="flex items-center justify-start">
 				  <span class="text-start text-sm">{link.name}</span>
 					<button
-						class="btn btn-xs btn-ghost text-success" 
+						class="btn btn-xs btn-ghost text-success"
 						title="Edit Link"
 						on:click=move |event| {
 							event.prevent_default();
@@ -502,7 +504,7 @@ pub fn LinkBox(
 				  {link.url.clone()}
 				</a>
 				<button
-					class="btn btn-xs btn-ghost text-warning" 
+					class="btn btn-xs btn-ghost text-warning"
 					title="Remove Link"
 					on:click=move |event| {
 						event.prevent_default();
