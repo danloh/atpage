@@ -283,7 +283,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				</a>
 			</div>
 			<span class="text-xs text-primary">
-				"e.g. body {color:green;} .at-page {max-width:520px;} .at-card {padding:6px;margin:10px;}"
+				"e.g. body {color:green;} .at-page {max-width:520px;} .at-card {padding:6px;margin:5px;}"
 			</span>
 			<textarea
 				prop:value={val.style.unwrap_or_default()}

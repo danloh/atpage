@@ -75,7 +75,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 									<ProfileView profile=p_signal.get() />
 									<div class="flex flex-col items-center justify-center gap-2 at-view">
 										<div
-											class="prose flex items-center justify-center p-2 at-description"
+											class="w-full prose flex items-center justify-center p-2 at-description"
 											inner_html={md2html(&res.description.unwrap_or_default()).html}
 										/>
 										<div class="w-full flex flex-wrap items-center justify-center gap-2 at-links">
@@ -157,7 +157,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 											profile=p_signal
 										/>
 									</div>
-									<div class="my-4 at-btm">
+									<div class="w-full my-4 at-btm">
 										<a href="/setup" class="link link-hover at-join">
 											{format!(
 												"Join {} on ATPage",
@@ -195,7 +195,7 @@ pub fn AtBox(did: String, services: Vec<String>, profile: RwSignal<ProfileRes>) 
 	let rec_res = LocalResource::new(move || fetch_records((did.clone(), services.clone())));
 
 	view! {
-		<div class="flex flex-col items-center justify-center gap-2 at-box">
+		<div class="w-full flex flex-col items-center justify-center gap-2 at-box">
 			<Suspense fallback=move || "Loading">
 				{move || match rec_res.get() {
 					Some(res) => {
@@ -282,7 +282,7 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 #[component]
 pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 	view! {
-		<div class="flex flex-wrap items-center justify-center gap-2 at-profile">
+		<div class="w-full flex flex-wrap items-center justify-center gap-2 at-profile">
 			<img
 				class="h-8 w-8 rounded-full at-avatar"
 				src={profile.avatar.clone().unwrap_or_default()}
