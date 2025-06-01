@@ -380,7 +380,7 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 	}
 }
 
-const DEFAULT_STYLE: &str = "
+pub const DEFAULT_STYLE: &str = "
 	body {
 		background-color: #fff8e3; 
 	}

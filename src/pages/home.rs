@@ -5,6 +5,7 @@ use leptos_meta::Title;
 use leptos_use::{use_textarea_autosize, UseTextareaAutosizeReturn};
 
 use crate::helper::utils::go_to;
+use crate::pages::atpage::DEFAULT_STYLE;
 use crate::resources::atpage::{fetch_atpage, put_atpage_record, AtPageValue, LinkEntry};
 use crate::resources::auth::{get_profile, use_auth};
 
@@ -243,7 +244,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				"Want more services available? submit please."
 		  </a>
 			<div class="flex flex-wrap items-center justify-between gap-2">
-			  <b class="text-start">"Links"</b>
+			  <b class="text-start">"Links on my atpage"</b>
 				<button
 					class="btn btn-xs btn-ghost rounded-sm p-1 m-1 text-success"
 					title="Add Link"
@@ -278,12 +279,17 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					"Shared"
 				</a>
 			</div>
-			<span class="text-sm text-primary">
-				"Blank means default style or Customize: can copy the below snippet and edit"
-			</span>
-			<code class="text-xs my-1">
-				".at-page {max-width:520px;} .at-card {padding:6px;margin:5px;background:#fff8e3;}"
-			</code>
+			<div class="flex flex-wrap items-center justify-between gap-2">
+			  <span class="text-sm text-primary">
+					"Customize or use default style(no input)"
+				</span>
+				<button
+					class="btn btn-xs btn-ghost text-xs text-success"
+					on:click=move |_| _ = window().navigator().clipboard().write_text(DEFAULT_STYLE)
+				>
+					"Copy Default Style"
+				</button>
+			</div>
 			<textarea
 				prop:value={val.style.unwrap_or_default()}
 				node_ref=style_ref
@@ -295,7 +301,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				required
 			></textarea>
 			<div class="flex flex-wrap items-center justify-between gap-2">
-			  <b class="text-start">"Inject script on my atpage(Optional)"</b>
+			  <b class="text-start">"Inject script into my atpage(Optional)"</b>
 				<a
 					class="link link-hover text-xs text-primary"
 					href="https://github.com/danloh/atpage/tree/main/shared"
@@ -522,7 +528,7 @@ pub fn LinkBox(
 			</div>
 			<div class="w-full text-xs opacity-75">{link.description}</div>
 			<div class="w-full text-xs opacity-75">{link.icon}</div>
-			<div class="w-full text-xs opacity-75 mt-2">{link.style}</div>
+			<code class="w-full text-xs opacity-75 mt-2">{link.style}</code>
 		</div>
 	}
 }
