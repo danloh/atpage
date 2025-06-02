@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::hooks::use_params_map;
-use phosphor_leptos::{Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, TWITTER_LOGO};
+use phosphor_leptos::{Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, THREADS_LOGO, TWITTER_LOGO};
 
 use crate::helper::md::md2html;
 use crate::helper::utils::{get_ico, ts_to_dt};
@@ -360,6 +360,18 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							}
 						>
 							<Icon icon=FACEBOOK_LOGO size="18px"/> " Facebook"
+						</button>
+						<button
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							style="color: #AE2983;"
+							on:click=move |_| { 
+								let share_url = format!(
+									"https://www.threads.net/intent/post?text={}", txt.get()
+								);
+								_ = window().open_with_url(&share_url);
+							}
+						>
+							<Icon icon=THREADS_LOGO size="18px"/> " Threads"
 						</button>
 						<button
 							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
