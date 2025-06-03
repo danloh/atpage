@@ -24,7 +24,7 @@ pub fn Home() -> impl IntoView {
 					"Links and Footprints on atproto, into one customizable page."
 				</h2>
 				<p class="p-2" style="color: white;">
-					"One link in bio to help share everything you create on atproto"
+					"One link in bio to help share your activities on atproto"
 				</p>
 				<div class="flex items-center justify-center gap-2 w-full mt-4">
 					<input
@@ -36,10 +36,11 @@ pub fn Home() -> impl IntoView {
 					  class="w-12 btn rounded"
 						on:click=move |_| {
 							let handle = handle_ref.get().unwrap().value();
-							if handle.trim().is_empty() {
-								return;
-							}
-							let url = format!("/{}", handle);
+							let url = if handle.trim().is_empty() {
+								format!("/atpage.one")
+							} else {
+								format!("/{}", handle)
+							};
 							window().open_with_url_and_target(&url, "_self").unwrap();
 						}
 					>
@@ -298,7 +299,6 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				class="textarea h-full w-full code-box"
 				placeholder="Customize the style/css of my atpage"
 				on:input=move |evt| set_style.set(event_target_value(&evt))
-				required
 			></textarea>
 			<div class="flex flex-wrap items-center justify-between gap-2">
 			  <b class="text-start">"Inject script into my atpage(Optional)"</b>
@@ -318,7 +318,6 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 				class="textarea h-full w-full code-box"
 				placeholder="Inject JavaScript"
 				on:input=move |evt| set_script.set(event_target_value(&evt))
-				required
 			></textarea>
 			<button
 				class="btn text-success mt-4"
