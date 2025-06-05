@@ -8,6 +8,7 @@ use phosphor_leptos::{
 
 use crate::helper::md::md2html;
 use crate::helper::utils::{get_ico, ts_to_dt};
+use crate::pages::home::DEFAULT_STYLE;
 use crate::resources::atpage::{fetch_atpage, fetch_records, links_to_map, AtRecord, LinkEntry};
 use crate::resources::auth::{get_profile, ProfileRes};
 
@@ -416,25 +417,3 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 		</details>
 	}
 }
-
-pub const DEFAULT_STYLE: &str = "
-	body {
-		background-color: #fff8e3; 
-	}
-	.at-page {
-	  max-width: 520px;
-	}
-	.at-card {    
-		padding: 10px;
-		margin: 5px auto;
-		background: #dee9de;
-		word-break: break-word;
-		border-radius: 8px;
-		box-sizing: border-box;
-	}
-	.at-hdl {
-		color: rgb(25, 137, 254);
-	}
-	.at-kind {
-		color: green;
-	}";

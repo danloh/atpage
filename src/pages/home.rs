@@ -5,7 +5,6 @@ use leptos_meta::Title;
 use leptos_use::{use_textarea_autosize, UseTextareaAutosizeReturn};
 
 use crate::helper::utils::go_to;
-use crate::pages::atpage::DEFAULT_STYLE;
 use crate::resources::atpage::{fetch_atpage, put_atpage_record, AtPageValue, LinkEntry};
 use crate::resources::auth::{get_profile, use_auth};
 
@@ -280,7 +279,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					"Shared"
 				</a>
 			</div>
-			<div class="flex flex-wrap items-center justify-between gap-2">
+			<div class="flex flex-wrap items-center justify-start gap-2">
 			  <span class="text-sm text-primary">
 					"Customize or use default style(no input)"
 				</span>
@@ -288,7 +287,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					class="btn btn-xs btn-ghost text-xs text-success"
 					on:click=move |_| _ = window().navigator().clipboard().write_text(DEFAULT_STYLE)
 				>
-					"Copy Default Style"
+					"Copy default style"
 				</button>
 			</div>
 			<textarea
@@ -412,12 +411,16 @@ pub fn LinkForm(
 			/>
 			<Show when=move || { more_option.get() } fallback=|| "" >
 			  <div class="flex flex-col mt-1">
-				  <span class="text-sm text-primary my-1">
-					  "Style the Link: can copy the below snippet and edit"
-				  </span>
-					<code class="text-xs my-1">
-					  "padding: 10px 18px; background-color: blue; color: white; border-radius: 5%;"
-				  </code>
+				  <div class="flex flex-wrap items-center justify-start gap-2">
+						<span class="text-sm text-primary my-1">"Style the Link"</span>
+						<button
+							class="btn btn-xs btn-ghost text-xs text-success"
+							on:click=move |_| _ = window().navigator().clipboard().write_text(LINK_STYLE)
+						>
+							"Copy the snippet"
+						</button>
+					</div>
+					<code class="text-xs my-1">{LINK_STYLE}</code>
 					<textarea
 						node_ref=style_ref
 						name="style"
@@ -438,25 +441,13 @@ pub fn LinkForm(
 					/>
 				</div>
 			</Show>
-			<div class="flex items-center justify-start mt-2">
-				<span class="text-xs text-primary">
-					"The link appears as an icon on ATPage by default, you can style it as a card, banner"
-				</span>
-				<a
-					class="link link-hover text-success text-xs"
-					href="https://whtwnd.com/atpage.one/3lq6tq6bwiy2f"
-					target="_blank"
-				>
-					" ...."
-				</a>
+			<div class="flex flex-wrap items-start justify-between gap-2 mt-2">
 				<button
-					class="btn btn-xs btn-ghost text-xs text-primary mx-2"
+					class="btn btn-xs btn-ghost text-xs text-success"
 					on:click=move |_| { more_option.set(!more_option.get()) }
 				>
 					{move || if more_option.get() {"Less Options"} else {"More options"}}
 				</button>
-			</div>
-			<div class="flex flex-wrap items-center justify-center gap-2 mt-2">
 				<button
 					class="btn btn-sm text-success"
 					disabled={disable_btn}
@@ -544,3 +535,30 @@ pub fn LinkBox(
 		</div>
 	}
 }
+
+
+pub const DEFAULT_STYLE: &str = "
+	body {
+		background-color: #fff8e3; 
+	}
+	.at-page {
+	  max-width: 520px;
+	}
+	.at-card {    
+		padding: 10px;
+		margin: 5px auto;
+		background: #dee9de;
+		word-break: break-word;
+		border-radius: 8px;
+		box-sizing: border-box;
+	}
+	.at-hdl {
+		color: rgb(25, 137, 254);
+	}
+	.at-kind {
+		color: green;
+	}
+";
+
+pub const LINK_STYLE: &str = 
+  "padding: 10px 18px; background-color: blue; color: white; border-radius: 5%;";
