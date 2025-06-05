@@ -1,11 +1,14 @@
+use itertools::Itertools;
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::hooks::use_params_map;
-use phosphor_leptos::{Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, THREADS_LOGO, TWITTER_LOGO};
+use phosphor_leptos::{
+	Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, THREADS_LOGO, TWITTER_LOGO
+};
 
 use crate::helper::md::md2html;
 use crate::helper::utils::{get_ico, ts_to_dt};
-use crate::resources::atpage::{fetch_atpage, fetch_records, AtRecord};
+use crate::resources::atpage::{fetch_atpage, fetch_records, links_to_map, AtRecord, LinkEntry};
 use crate::resources::auth::{get_profile, ProfileRes};
 
 /// endpoint `/:handle`
@@ -78,77 +81,29 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 											class="w-full prose flex items-center justify-center p-2 at-description"
 											inner_html={md2html(&res.description.unwrap_or_default()).html}
 										/>
-										<div class="w-full flex flex-wrap items-center justify-center gap-2 at-links">
-											{res
-												.links
+										<div class="w-full flex flex-col items-center justify-center gap-2 at-links">
+											{links_to_map(res.links)
 												.into_iter()
-												.map(|link| {
-													let url = link.url.clone();
-													let name = link.name.clone();
-													
-													let (link_style, styled) = match link.style {
-														Some(s) if !s.trim().is_empty() => (s, true),
-														_ => (String::new(), false)
-													};
-													let link_icon = match link.icon {
-														Some(ico) if !ico.trim().is_empty() => ico,
-														_ => get_ico(&url)
-													};
-													// no space allowed in class name
-													let cname = name.replace(" ", "");
-													let link_card_class = 
-														format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
-													let link_class = 
-														format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
-													let img_class = 
-														format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
-
-													if styled {
-														view! {
-															<div class={link_card_class} style={link_style}>
-																<a
-																	class={link_class}
-																	href={url.clone()}
-																	title={name.clone()}
-																>
-																	<img
-																		class={img_class}
-																		src={link_icon}
-																		alt={name.clone()}
-																		loading="lazy"
-																	/>
-																	<div class={format!("flex gap-2 at-desc at-desc-{}", cname)}>
-																		<span class={format!("at-name at-name-{}", cname)}>
-																			{name.clone()}
-																		</span>
-																		<span class={format!("at-des at-des-{}", cname)}>
-																			{link.description.unwrap_or_default()}
-																		</span>
-																	</div>
-																</a>
-																<ShareBtn text={url} />
-															</div>
-														}
-														.into_any()
-													} else {
-														view! {
-															<a
-																class={format!("link link-hover at-link at-link-{}", cname)}
-																href={url}
-																title={name.clone()}
-															>
-																<img
-																	class={img_class}
-																	src={link_icon}
-																	alt={name.clone()}
-																	loading="lazy"
-																/>
-															</a>
-														}
-														.into_any()
+												.sorted_by(|a, b| Ord::cmp(&a.0, &b.0))
+												.map(|(category, links)| {
+													let is_category = !category.trim().is_empty();
+												  view! {
+														<div class="w-full flex flex-wrap items-center justify-center gap-2">
+															<Show when=move || { is_category } fallback=|| "" >
+																<span class=format!("at-cat at-cat-{}", category.replace(" ", ""))>
+																  {category.clone()}
+																</span>
+															</Show>
+															{links
+																.into_iter()
+																.sorted_by(|a, b| Ord::cmp(&a.style, &b.style))
+																.map(|link| view! { <LinkCard link /> })
+																.collect_view()
+															}
+														</div>
 													}
 												})
-												.collect_view()
+						            .collect_view()
 											}
 										</div>
 										<AtBox
@@ -187,6 +142,76 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 				None => "error".into_any()
 			}}
 		</Suspense>
+	}
+}
+
+#[component]
+pub fn LinkCard(link: LinkEntry) -> impl IntoView {
+	let url = link.url.clone();
+	let name = link.name.clone();
+	
+	let (link_style, styled) = match link.style {
+		Some(s) if !s.trim().is_empty() => (s, true),
+		_ => (String::new(), false)
+	};
+	let link_icon = match link.icon {
+		Some(ico) if !ico.trim().is_empty() => ico,
+		_ => get_ico(&url)
+	};
+	// no space allowed in class name
+	let cname = name.replace(" ", "");
+	let link_card_class = 
+		format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
+	let link_class = 
+		format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
+	let img_class = 
+		format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
+
+	if styled {
+		view! {
+			<div class={link_card_class} style={link_style}>
+				<a
+					class={link_class}
+					href={url.clone()}
+					title={name.clone()} 
+					target="_blank"
+				>
+					<img
+						class={img_class}
+						src={link_icon}
+						alt={name.clone()}
+						loading="lazy"
+					/>
+					<div class={format!("flex gap-2 at-desc at-desc-{}", cname)}>
+						<span class={format!("at-name at-name-{}", cname)}>
+							{name.clone()}
+						</span>
+						<span class={format!("at-des at-des-{}", cname)}>
+							{link.description.unwrap_or_default()}
+						</span>
+					</div>
+				</a>
+				<ShareBtn text={url} />
+			</div>
+		}
+		.into_any()
+	} else {
+		view! {
+			<a
+				class={format!("link link-hover at-link at-link-{}", cname)}
+				href={url}
+				title={name.clone()} 
+				target="_blank"
+			>
+				<img
+					class={img_class}
+					src={link_icon}
+					alt={name.clone()}
+					loading="lazy"
+				/>
+			</a>
+		}
+		.into_any()
 	}
 }
 

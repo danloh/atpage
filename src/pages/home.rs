@@ -24,7 +24,7 @@ pub fn Home() -> impl IntoView {
 					"Links and Footprints on atproto, into one customizable page."
 				</h2>
 				<p class="p-2" style="color: white;">
-					"One link in bio to help share your activities on atproto"
+					"One link in bio for ATmosphere"
 				</p>
 				<div class="flex items-center justify-center gap-2 w-full mt-4">
 					<input
@@ -362,6 +362,7 @@ pub fn LinkForm(
 	let name_ref = NodeRef::<Input>::new();
 	let url_ref = NodeRef::<Input>::new();
 	let desc_ref = NodeRef::<Input>::new();
+	let category_ref = NodeRef::<Input>::new();
 	let icon_ref = NodeRef::<Input>::new();
 	let style_ref = NodeRef::<Textarea>::new();
 
@@ -375,21 +376,30 @@ pub fn LinkForm(
 				type="text"
 				name="name"
 				id="name"
-				title="name"
+				title="Name"
 				class="input w-full"
 				value={link.name}
-				placeholder="name"
+				placeholder="Name"
 				required
 			/>
 			<input
 				node_ref=url_ref
 				name="url"
 				id="url"
-				title="URL"
+				title="Link Address"
 				class="input w-full"
-				placeholder="URL"
+				placeholder="Link Address"
 				prop:value={link.url}
 				required
+			/>
+			<input
+				node_ref=icon_ref
+				name="icon"
+				id="icon"
+				title="icon link"
+				class="input w-full"
+				placeholder="icon link for the link(Optional)"
+				prop:value={link.icon.clone().unwrap_or_default()}
 			/>
 			<input
 				node_ref=desc_ref
@@ -399,15 +409,6 @@ pub fn LinkForm(
 				class="input w-full"
 				placeholder="description(Optional)"
 				prop:value={link.description.unwrap_or_default()}
-			/>
-			<input
-				node_ref=icon_ref
-				name="icon"
-				id="icon"
-				title="icon URL"
-				class="input w-full"
-				placeholder="ICON URL for the link(Optional)"
-				prop:value={link.icon.clone().unwrap_or_default()}
 			/>
 			<Show when=move || { more_option.get() } fallback=|| "" >
 			  <div class="flex flex-col mt-1">
@@ -425,6 +426,15 @@ pub fn LinkForm(
 						class="textarea w-full code-box"
 						placeholder="style the link as banner, card..."
 						prop:value={link.style.clone().unwrap_or_default()}
+					/>
+					<input
+						node_ref=category_ref
+						name="category"
+						id="category"
+						title="category"
+						class="input w-full my-1"
+						placeholder="category(Optional)"
+						prop:value={link.category.clone().unwrap_or_default()}
 					/>
 				</div>
 			</Show>
@@ -460,6 +470,7 @@ pub fn LinkForm(
 									url: url.clone(),
 									name: name_ref.get().unwrap().value(),
 									description: desc_ref.get().map(|d| d.value()),
+									category: category_ref.get().map(|d| d.value()),
 									style: style_ref.get().map(|s| s.value()),
 									icon: icon_ref.get().map(|s| s.value()),
 									..Default::default()
@@ -525,7 +536,9 @@ pub fn LinkBox(
 					"X"
 				</button>
 			</div>
-			<div class="w-full text-xs opacity-75">{link.description}</div>
+			<div class="w-full flex flex-wrap gap-2 text-xs opacity-75">
+			  <span class="text-primary">{link.category}</span><span>{link.description}</span>
+			</div>
 			<div class="w-full text-xs opacity-75">{link.icon}</div>
 			<code class="w-full text-xs opacity-75 mt-2">{link.style}</code>
 		</div>

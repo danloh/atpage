@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -42,6 +43,7 @@ pub struct LinkEntry {
 	pub order: i32,
 	pub createdAt: i64,
 	pub description: Option<String>,
+	pub category: Option<String>,
 	pub icon: Option<String>,
 	pub style: Option<String>,
 }
@@ -162,4 +164,26 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 		vec.into_iter().sorted_by(|a, b| Ord::cmp(&b.timestamp, &a.timestamp)).collect();
 
 	RecordsRes { records: final_vec, cursor: None }
+}
+
+
+pub fn links_to_map(links: Vec<LinkEntry>) -> HashMap<String, Vec<LinkEntry>> {
+	let mut links_map: HashMap<String, Vec<LinkEntry>> = HashMap::new();
+	for link in links {
+		let catrgory = if link.style.clone().unwrap_or_default().is_empty() {
+			String::new()
+		} else {
+			link.category.clone().and_then(|w|
+			  if w.trim().is_empty() {None} else {Some(w)}
+			)
+			.unwrap_or_default()
+		};
+
+	  links_map
+			.entry(catrgory)
+			.and_modify(|lnks| lnks.push(link.clone()))
+			.or_insert(vec![link]);
+	}
+	
+	links_map
 }
