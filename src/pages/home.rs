@@ -101,7 +101,7 @@ pub fn SetupPage() -> impl IntoView {
 						match p {
 							Ok(profile) => {
 								view! {
-									<div class="flex flex-col gap-2 w-full mb-4">
+									<div class="flex flex-col gap-2 w-full mb-4 break-all">
 										<div class="flex flex-col items-center justify-center gap-2 mb-4">
 											<div class="flex flex-wrap items-center justify-start gap-2">
 												<img

@@ -77,7 +77,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 							<div class="min-h-screen w-screen at-screen">
 								<div class="flex flex-col items-center justify-center p-2 mx-auto max-w-2xl at-page">
 									<ProfileView profile=p_signal.get() />
-									<div class="flex flex-col items-center justify-center gap-2 at-view">
+									<div class="w-full flex flex-col items-center justify-center gap-2 at-view">
 										<div
 											class="w-full prose flex items-center justify-center p-2 at-description"
 											inner_html={md2html(&res.description.unwrap_or_default()).html}
