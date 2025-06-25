@@ -256,7 +256,7 @@ pub fn SetupForm(val: AtPageValue) -> impl IntoView {
 					{move || if show_add.get() {"Cancel"} else {"Add Link"}}
 				</button>
 			</div>
-			<Show when=move || { show_add.get() } fallback=|| "" >
+			<Show when=move || { show_add.get() }>
 				<LinkForm links link=link_form.get() show=show_add />
 			</Show>
 			<div class="flex flex-col items-center justify-center gap-2 w-full">
@@ -409,7 +409,7 @@ pub fn LinkForm(
 				placeholder="description(Optional)"
 				prop:value={link.description.unwrap_or_default()}
 			/>
-			<Show when=move || { more_option.get() } fallback=|| "" >
+			<Show when=move || { more_option.get() }>
 			  <div class="flex flex-col mt-1">
 				  <div class="flex flex-wrap items-center justify-start gap-2">
 						<span class="text-sm text-primary my-1">"Style the Link"</span>

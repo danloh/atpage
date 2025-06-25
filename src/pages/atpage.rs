@@ -90,7 +90,7 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 													let is_category = !category.trim().is_empty();
 												  view! {
 														<div class="w-full flex flex-wrap items-center justify-center gap-2">
-															<Show when=move || { is_category } fallback=|| "" >
+															<Show when=move || { is_category }>
 																<span class=format!("at-cat at-cat-{}", category.replace(" ", ""))>
 																  {category.clone()}
 																</span>
