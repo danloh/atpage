@@ -18,7 +18,7 @@ fn App() -> impl IntoView {
 				<Route path=path!("/login") view=move || view! { <LogIn /> } />
 				<Route path=path!("/setup") view=move || view! { <SetupPage /> } />
 				<Route path=path!("/:handle") view=move || view! { <AtPage /> } />
-				// <Route path=path!("/t/:did") view=move || view! { <pages::tpage::TestAtPage /> } />
+				<Route path=path!("/t/:did") view=move || view! { <pages::tpage::TestAtPage /> } />
 			</Routes>
 			<div id="at-toast"></div>
 		</Router>

@@ -14,6 +14,7 @@ Links and footprints on ATProto into one customizable page.
 ## Services supported
 
 - frontpage: https://frontpage.fyi
+- leaflet: https://leaflet.pub  
 - whitewind: https://whtwnd.com
 - pinksea: https://pinksea.art 
 - ruthub: https://ruthub.com 
