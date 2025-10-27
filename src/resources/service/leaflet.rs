@@ -62,7 +62,11 @@ pub async fn get_leaflet_records(
 					};
 					let uri = entry.uri;
 					let (_did, _col, rkey) = uri_parts(&uri);
-					let link = format!("{base_path}/{rkey}");
+					let link = if base_path.starts_with("https://") {
+						format!("{base_path}/{rkey}")
+					} else {
+						format!("https://{base_path}/{rkey}")
+					};
 
 					let rec = AtRecord {
 						kind: String::from("leaflet"),
