@@ -37,7 +37,7 @@ pub struct WndValue {
 }
 
 // TODO, leverage cursor for pagination
-pub async fn get_wnd_records(
+pub async fn get_whtwnd_records(
 	did: &str,
 	serv: &str,
 	cur: Option<String>,

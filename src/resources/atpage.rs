@@ -9,7 +9,7 @@ use super::{
 	service::{
 		frontpage::get_frontpage_records, grain::get_grain_records, pinksea::get_pinksea_records, 
 		recipe::get_recipe_records, ruthub::get_ruthub_records, leaflet::get_leaflet_records,
-		smokesignal::get_smokesignal_records, whitewind::get_wnd_records
+		smokesignal::get_smokesignal_records, whitewind::get_whtwnd_records
 	},
 };
 
@@ -134,7 +134,7 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 			vec.append(&mut frontpages);
 		}
 		if service == "whitewind" {
-			let (mut wnds, _w_cur) = get_wnd_records(&did, &serv, None).await;
+			let (mut wnds, _w_cur) = get_whtwnd_records(&did, &serv, None).await;
 			vec.append(&mut wnds);
 		}
 		if service == "pinksea" {

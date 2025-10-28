@@ -7,7 +7,7 @@ use crate::{
 		atpage::RecordsRes, 
 		auth::resolve_did, 
 		service::{
-			frontpage::get_frontpage_records, grain::get_grain_records, leaflet::get_leaflet_records, pinksea::get_pinksea_records, recipe::get_recipe_records, ruthub::get_ruthub_records, smokesignal::get_smokesignal_records, whitewind::get_wnd_records
+			frontpage::get_frontpage_records, grain::get_grain_records, leaflet::get_leaflet_records, pinksea::get_pinksea_records, recipe::get_recipe_records, ruthub::get_ruthub_records, smokesignal::get_smokesignal_records, whitewind::get_whtwnd_records
 		}
 	}
 };
@@ -50,7 +50,7 @@ pub async fn fetch_all_records(did: String) -> RecordsRes {
   let (mut frontpages, _f_cur) = get_frontpage_records(&did, &serv, None).await;
   vec.append(&mut frontpages);
 
-  let (mut wnds, _w_cur) = get_wnd_records(&did, &serv, None).await; 
+  let (mut wnds, _w_cur) = get_whtwnd_records(&did, &serv, None).await; 
   vec.append(&mut wnds);
 
   let (mut pinkseas, _p_cur) = get_pinksea_records(&did, &serv, None).await; 
