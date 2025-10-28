@@ -3,6 +3,7 @@ use leptos::prelude::request_animation_frame;
 use leptos_router::hooks::use_navigate;
 use leptos_router::NavigateOptions;
 
+/// navigate page
 pub fn go_to(page: impl AsRef<str>) {
 	let navigate = use_navigate();
 	let page = page.as_ref().to_string();
@@ -27,6 +28,7 @@ pub fn str_to_timestamp(dt: &str) -> i64 {
 	parsed
 }
 
+/// get URL's domain name
 pub fn get_host(uri: &str) -> String {
 	let new_uri = uri.replace("http://", "").replace("https://", "").replace("www.", "");
 	let parts: Vec<&str> = new_uri.split("/").collect();
@@ -34,6 +36,7 @@ pub fn get_host(uri: &str) -> String {
 	parts.first().map(|s| s.to_string()).unwrap_or_else(|| uri.to_string())
 }
 
+/// get ico of a webpage via duckduckgo
 pub fn get_ico(uri: &str) -> String {
 	let hostname = get_host(uri);
 	format!("https://icons.duckduckgo.com/ip3/{hostname}.ico")

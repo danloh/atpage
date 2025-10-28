@@ -1,4 +1,3 @@
-/// Markdown to HTML
 use pulldown_cmark::{html, CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 use std::fmt::Write;
 use std::io::Cursor;

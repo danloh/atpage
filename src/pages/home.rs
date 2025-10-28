@@ -8,6 +8,7 @@ use crate::helper::utils::go_to;
 use crate::resources::atpage::{fetch_atpage, put_atpage_record, AtPageValue, LinkEntry};
 use crate::resources::auth::{get_profile, use_auth};
 
+/// endpoint `/`
 #[component]
 pub fn Home() -> impl IntoView {
 	let handle_ref = NodeRef::<Input>::new();

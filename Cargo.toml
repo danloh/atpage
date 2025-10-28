@@ -15,7 +15,7 @@ strip = true
 #console_error_panic_hook = { workspace = true }
 
 [dependencies]
-leptos = { version = "0.8.11", features = ["csr"] }
+leptos = { version = "0.8.12", features = ["csr"] }
 leptos_meta = "0.8.5"
 leptos_router = "0.8.9"
 leptos-use = "0.16.3"

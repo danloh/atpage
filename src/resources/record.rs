@@ -1,5 +1,12 @@
 use serde::{Deserialize, Serialize};
 
+/// for put record response
+#[derive(Clone, Default, Serialize, Deserialize)]
+pub struct PutResp {
+	pub uri: String,
+	pub cid: String,
+}
+
 // FIXME, how to handle panic better?
 /// split at: URI, return (did, collection, rkey)
 pub fn uri_parts(uri: &str) -> (String, String, String) {
@@ -28,13 +35,6 @@ pub async fn get_record(col: &str, rkey: &str, serv: &str, did: &str) -> Result<
 		.map_err(|e| format!("get_record err: {:?}", e))?;
 
 	Ok(res)
-}
-
-/// for put record response
-#[derive(Clone, Default, Serialize, Deserialize)]
-pub struct PutResp {
-	pub uri: String,
-	pub cid: String,
 }
 
 pub async fn list_record(

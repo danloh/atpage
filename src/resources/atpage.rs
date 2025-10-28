@@ -13,7 +13,6 @@ use super::{
 	},
 };
 
-/// for record links
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct AtPageResp {
 	pub uri: String,
@@ -21,7 +20,7 @@ pub struct AtPageResp {
 	pub value: AtPageValue,
 }
 
-/// for record links
+/// for record atpage including links, services
 #[derive(Clone, Default, Serialize, Deserialize, Debug)]
 pub struct AtPageValue {
 	#[serde(rename = "$type")]
@@ -123,7 +122,7 @@ pub struct AtRecord {
 #[derive(Clone, Default)]
 pub struct RecordsRes {
 	pub records: Vec<AtRecord>,
-	pub cursor: Option<String>,
+	pub cursor: Option<String>, // TODO
 }
 
 pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes {
@@ -170,7 +169,7 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 	RecordsRes { records: final_vec, cursor: None }
 }
 
-
+/// Group links by category
 pub fn links_to_map(links: Vec<LinkEntry>) -> HashMap<String, Vec<LinkEntry>> {
 	let mut links_map: HashMap<String, Vec<LinkEntry>> = HashMap::new();
 	for link in links {
