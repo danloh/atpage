@@ -147,7 +147,7 @@ pub async fn refresh_token(token: String) -> String {
 	}
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Default)]
 #[allow(non_snake_case)]
 pub struct ResolveRes {
 	// pub id: String,
@@ -155,14 +155,14 @@ pub struct ResolveRes {
 	pub service: Vec<ResolveService>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Default)]
 #[allow(non_snake_case)]
 pub struct ResolveService {
 	// pub id: String,
 	pub serviceEndpoint: String,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Default)]
 #[allow(non_snake_case)]
 pub struct ResolveDid {
 	// pub id: String,
@@ -174,11 +174,15 @@ pub async fn resolve_did(did: &str) -> ResolveDid {
 	let fetch_uri = format!("https://plc.directory/{}", did);
 
 	let client = reqwest::Client::new();
-	let res = client.get(fetch_uri).send().await.unwrap().text().await.unwrap();
+	let res = if let Ok(req) = client.get(fetch_uri).send().await {
+		req.text().await.unwrap_or_default()
+	} else {
+		return Default::default()
+	};
 
 	// gloo::console::log!("req res: ", res.clone());
 
-	let json: ResolveRes = serde_json::from_str(&res).unwrap();
+	let json: ResolveRes = serde_json::from_str(&res).unwrap_or_default();
 
 	let final_res = ResolveDid {
 		// id: json.id.clone(),

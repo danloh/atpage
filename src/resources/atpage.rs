@@ -9,7 +9,8 @@ use super::{
 	service::{
 		frontpage::get_frontpage_records, grain::get_grain_records, pinksea::get_pinksea_records, 
 		recipe::get_recipe_records, ruthub::get_ruthub_records, leaflet::get_leaflet_records,
-		smokesignal::get_smokesignal_records, whitewind::get_whtwnd_records
+		smokesignal::get_smokesignal_records, whitewind::get_whtwnd_records, 
+		popfeed::get_popfeed_records
 	},
 };
 
@@ -160,6 +161,10 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 		if service == "leaflet" {
 			let (mut leafs, _lf_cur) = get_leaflet_records(&did, &serv, None).await;
 			vec.append(&mut leafs);
+		}
+		if service == "popfeed" {
+			let (mut popfs, _pf_cur) = get_popfeed_records(&did, &serv, None).await;
+			vec.append(&mut popfs);
 		}
 	}
 

@@ -6,3 +6,4 @@ pub mod leaflet;
 pub mod smokesignal;
 pub mod grain;
 pub mod recipe;
+pub mod popfeed;
