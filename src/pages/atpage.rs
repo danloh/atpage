@@ -1,5 +1,4 @@
 use itertools::Itertools;
-use leptos::html::HtmlElement;
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::hooks::use_params_map;
@@ -337,11 +336,11 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 	let txt = RwSignal::new(text);
 
 	view! {
-		<div class="dropdown dropdown-end at-share">
-		  <div tabindex="0" role="button" class="btn btn-xs btn-ghost">
+		<details class="dropdown dropdown-end at-share">
+		  <summary class="btn btn-xs btn-ghost">
 				<Icon icon=SHARE_NETWORK size="18" />
-			</div>
-			<ul tabindex="0" class="menu dropdown-content p-2 bg-base-300 rounded-sm z-50 w-32">
+			</summary>
+			<ul class="menu dropdown-content p-2 bg-base-300 rounded-sm z-50 w-32">
 				<div class="flex flex-col h-full overflow-y-auto no-scrollbar">
 					<div class="flex flex-col items-start justify-center gap-2">
 					  <button
@@ -415,6 +414,6 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 					</div>
 				</div>
 			</ul>
-		</div>
+		</details>
 	}
 }
