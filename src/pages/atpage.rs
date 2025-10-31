@@ -325,14 +325,16 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 	view! {
 		<div class="w-full flex flex-wrap items-center justify-center gap-2 at-profile">
-			<img
-				class="h-8 w-8 rounded-full at-avatar"
-				src={profile.avatar.clone().unwrap_or_default()}
-				loading="lazy"
-			/>
-			<a
-				href={format!("https://bsky.app/profile/{}", profile.handle.clone())}
-				target="_blank"
+			<a href={format!("https://bsky.app/profile/{}", profile.handle.clone())}>
+				<img
+					class="h-8 w-8 rounded-full at-avatar"
+					src={profile.avatar.clone().unwrap_or_default()}
+					loading="lazy"
+				/>
+			</a>
+			<a 
+			  href={format!("/{}", profile.handle.clone())} 
+				target="_blank" 
 				class="link link-hover text-2xl at-handle"
 			>
 				{
