@@ -36,17 +36,17 @@ pub struct TrackValue {
 	pub updatedAt: i64,
 }
 
-#[derive(Clone, Default, Serialize, Deserialize, PartialEq)]
-pub struct TrackItem {
-	pub kind: String,
-	pub item: Item,
-	pub note: String,
-	pub status: u8,
-	pub rating: u8,
-	pub collection: Option<String>,
-	pub stamp: Option<String>,
-	pub updated_at: i64, // timestamp(sec)
-}
+// #[derive(Clone, Default, Serialize, Deserialize, PartialEq)]
+// pub struct TrackItem {
+// 	pub kind: String,
+// 	pub item: Item,
+// 	pub note: String,
+// 	pub status: u8,
+// 	pub rating: u8,
+// 	pub collection: Option<String>,
+// 	pub stamp: Option<String>,
+// 	pub updated_at: i64, // timestamp(sec)
+// }
 
 #[derive(Clone, Default, Serialize, Deserialize, PartialEq, Debug)]
 pub struct Item {

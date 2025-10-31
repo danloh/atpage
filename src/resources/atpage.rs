@@ -10,7 +10,7 @@ use super::{
 		frontpage::get_frontpage_records, grain::get_grain_records, pinksea::get_pinksea_records, 
 		recipe::get_recipe_records, ruthub::get_ruthub_records, leaflet::get_leaflet_records,
 		smokesignal::get_smokesignal_records, whitewind::get_whtwnd_records, 
-		popfeed::get_popfeed_records
+		popfeed::get_popfeed_records, nooki::get_nooki_records
 	},
 };
 
@@ -165,6 +165,10 @@ pub async fn fetch_records((did, services): (String, Vec<String>)) -> RecordsRes
 		if service == "popfeed" {
 			let (mut popfs, _pf_cur) = get_popfeed_records(&did, &serv, None).await;
 			vec.append(&mut popfs);
+		}
+		if service == "nooki" {
+			let (mut nookis, _nk_cur) = get_nooki_records(&did, &serv, None).await;
+			vec.append(&mut nookis);
 		}
 	}
 

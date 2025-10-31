@@ -1,8 +1,6 @@
-//! Tracker for book, movie, ... 
-
+//! Review book, movie, ... 
 
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 use crate::{helper::utils::str_to_timestamp, resources::{
 	atpage::AtRecord, auth::resolve_did, record::{get_record, list_record, uri_parts}
@@ -41,11 +39,11 @@ pub struct ListItemValue {
 	// pub identifiers: Object,
 }
 
-#[derive(Clone, Default, Serialize, Deserialize)]
-pub struct ListsResp {
-	pub records: Vec<ListResp>,
-	pub cursor: Option<String>,
-}
+// #[derive(Clone, Default, Serialize, Deserialize)]
+// pub struct ListsResp {
+// 	pub records: Vec<ListResp>,
+// 	pub cursor: Option<String>,
+// }
 
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct ListResp {

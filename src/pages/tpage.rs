@@ -7,9 +7,9 @@ use crate::{
 		atpage::RecordsRes, 
 		auth::resolve_did, 
 		service::{
-			frontpage::get_frontpage_records, grain::get_grain_records, leaflet::get_leaflet_records,
-			pinksea::get_pinksea_records, popfeed::get_popfeed_records, recipe::get_recipe_records,
-			ruthub::get_ruthub_records, smokesignal::get_smokesignal_records, 
+			frontpage::get_frontpage_records, grain::get_grain_records, leaflet::get_leaflet_records, 
+			nooki::get_nooki_records, pinksea::get_pinksea_records, popfeed::get_popfeed_records, 
+			recipe::get_recipe_records, ruthub::get_ruthub_records, smokesignal::get_smokesignal_records, 
 			whitewind::get_whtwnd_records
 		}
 	}
@@ -76,6 +76,9 @@ pub async fn fetch_all_records(did: String) -> RecordsRes {
 
 	let (mut popfs, _pf_cur) = get_popfeed_records(&did, &serv, None).await;
 	vec.append(&mut popfs);	
+
+	let (mut nookis, _nk_cur) = get_nooki_records(&did, &serv, None).await;
+	vec.append(&mut nookis);
 
   let final_vec = vec
     .into_iter()

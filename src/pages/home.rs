@@ -73,8 +73,9 @@ pub fn Home() -> impl IntoView {
 }
 
 /// (name, category, domain)
-pub const AT_SERVICES: [(&str, &str, &str); 9] = [
+pub const AT_SERVICES: [(&str, &str, &str); 10] = [
 	("frontpage", "Link aggregator", "https://frontpage.fyi"),
+	("nooki", "Discussion platform", "https://nooki.me"),
 	("pinksea", "Oekaki BBS", "https://pinksea.art"),
 	("ruthub", "Tracker", "https://ruthub.com"),
 	("whitewind", "Blog", "https://whtwnd.com"),

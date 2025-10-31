@@ -7,3 +7,4 @@ pub mod smokesignal;
 pub mod grain;
 pub mod recipe;
 pub mod popfeed;
+pub mod nooki;
