@@ -1,9 +1,10 @@
 use itertools::Itertools;
 use leptos::prelude::*;
 use leptos_meta::*;
-use leptos_router::hooks::use_params_map;
+use leptos_router::hooks::{use_params_map, use_query_map};
 use phosphor_leptos::{
-	Icon, BUTTERFLY, COPY, FACEBOOK_LOGO, LINKEDIN_LOGO, SHARE_NETWORK, THREADS_LOGO, TWITTER_LOGO
+	BUTTERFLY, COPY, FACEBOOK_LOGO, FUNNEL, Icon, LINKEDIN_LOGO, SHARE_NETWORK, 
+	THREADS_LOGO, TWITTER_LOGO
 };
 
 use crate::helper::md::md2html;
@@ -21,6 +22,9 @@ pub fn AtPage() -> impl IntoView {
 		return "No Data".into_any();
 	}
 
+	let query = use_query_map();
+	let f: String = query.read().get("f").unwrap_or_default();
+
 	let txt = format!("{} | atpage", &handle);
 	let profile = LocalResource::new(move || get_profile(handle.clone()));
 
@@ -30,7 +34,7 @@ pub fn AtPage() -> impl IntoView {
 			{move || match profile.get() {
 				Some(p) => {
 					match p {
-						Ok(profile) => { view! { <AtView profile /> }.into_any() }
+						Ok(profile) => { view! { <AtView profile filter={f.clone()} /> }.into_any() }
 						Err(_e) => "".into_any()
 					}
 				}
@@ -42,7 +46,7 @@ pub fn AtPage() -> impl IntoView {
 }
 
 #[component]
-pub fn AtView(profile: ProfileRes) -> impl IntoView {
+pub fn AtView(profile: ProfileRes, filter: String) -> impl IntoView {
 	let p_signal = RwSignal::new(profile);
 	let atpage = LocalResource::new(move || fetch_atpage(p_signal.get().did));
 
@@ -109,7 +113,12 @@ pub fn AtView(profile: ProfileRes) -> impl IntoView {
 										</div>
 										<AtBox
 											did=p_signal.get().did
-											services=res.services.clone()
+											services=res
+											  .services
+											  .clone()
+											  .into_iter()
+												.filter(|s| filter.trim().is_empty() || s == filter.trim())
+												.collect()
 											profile=p_signal
 										/>
 									</div>
@@ -272,6 +281,13 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 					target="_blank"
 				>
 					{format!("@{}", kd)}
+				</a>
+				<a
+					href={format!("?f={}", kd)}
+					class={format!("link link-hover text-xs at-filter at-filter-{}", kd)}
+					target="_blank"
+				>
+					<Icon icon=FUNNEL size="16px"/>
 				</a>
 				<ShareBtn text={rec.link.clone()} />
 			</div>
