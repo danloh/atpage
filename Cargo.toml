@@ -32,6 +32,8 @@ codee = { version = "0.3.3", features = ["prost", "json_serde"] }
 slug = "0.1.6"
 latex2mathml = "0.2.3"
 
+web-sys = { version = "0.3.82", features = ["Document", "HtmlElement"] } 
+
 [dependencies.pulldown-cmark]
 version = "0.13.0"
 default-features = false 

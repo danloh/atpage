@@ -251,6 +251,7 @@ pub fn AtBox(did: String, services: Vec<String>, profile: RwSignal<ProfileRes>) 
 #[component]
 pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 	let kd = rec.kind.replace(" ", "");
+	let kd1 = kd.clone();
 
 	view! {
 		<div class={format!("w-full p-2 at-card at-card-{}", kd)}>
@@ -283,9 +284,11 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 					{format!("@{}", kd)}
 				</a>
 				<a
-					href={format!("?f={}", kd)}
 					class={format!("link link-hover text-xs at-filter at-filter-{}", kd)}
-					target="_blank"
+					on:click=move |_| { 
+						let page_url = format!("?f={}", kd1);
+						_ = window().open_with_url_and_target(&page_url, "_self");
+					}
 				>
 					<Icon icon=FUNNEL size="16px"/>
 				</a>
@@ -323,9 +326,11 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 
 #[component]
 pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
+	let handle = profile.handle.clone();
+
 	view! {
 		<div class="w-full flex flex-wrap items-center justify-center gap-2 at-profile">
-			<a href={format!("https://bsky.app/profile/{}", profile.handle.clone())}>
+			<a href={format!("https://bsky.app/profile/{}", handle)} target="_blank">
 				<img
 					class="h-8 w-8 rounded-full at-avatar"
 					src={profile.avatar.clone().unwrap_or_default()}
@@ -333,18 +338,20 @@ pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 				/>
 			</a>
 			<a 
-			  href={format!("/{}", profile.handle.clone())} 
-				target="_blank" 
-				class="link link-hover text-2xl at-handle"
+				class="link link-hover text-2xl at-handle" 
+				on:click=move |_| { 
+					let page_url = format!("/{}", profile.handle);
+					_ = window().open_with_url_and_target(&page_url, "_self");
+				}
 			>
 				{
 					profile.displayName.clone().map(|n| {
-						if n.trim().is_empty() { profile.handle.clone() } else { n }
+						if n.trim().is_empty() { handle.clone() } else { n }
 					})
-					.unwrap_or_else(|| profile.handle.clone())
+					.unwrap_or_else(|| handle.clone())
 				}
 			</a>
-			<ShareBtn text={format!("https://atpage.one/{}", profile.handle.clone())} />
+			<ShareBtn text={format!("https://atpage.one/{}", handle)} />
 		</div>
 	}
 }
