@@ -124,14 +124,18 @@ pub async fn get_session(access_token: String) -> String {
 	}
 }
 
-pub async fn refresh_token(token: String) -> String {
+pub async fn refresh_token(refresh_token: String) -> String {
 	let url = get_url("session_refresh");
 	if url.trim().is_empty() {
 		return "err".to_string();
 	}
 
 	let client = reqwest::Client::new();
-	let resp = client.post(url).header("Authorization", format!("Bearer {token}")).send().await;
+	let resp = client
+	  .post(url)
+		.header("Authorization", format!("Bearer {refresh_token}"))
+		.send()
+		.await;
 
 	if let Ok(res) = resp {
 		match res.error_for_status_ref() {
