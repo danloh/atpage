@@ -3,7 +3,7 @@ use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::hooks::{use_params_map, use_query_map};
 use phosphor_leptos::{
-	BUTTERFLY, COPY, FACEBOOK_LOGO, FUNNEL, Icon, LINKEDIN_LOGO, SHARE_NETWORK, 
+	BUTTERFLY, COPY, FACEBOOK_LOGO, FUNNEL, Icon, LINKEDIN_LOGO, SHARE_NETWORK,
 	THREADS_LOGO, TWITTER_LOGO
 };
 
@@ -159,7 +159,7 @@ pub fn AtView(profile: ProfileRes, filter: String) -> impl IntoView {
 pub fn LinkCard(link: LinkEntry) -> impl IntoView {
 	let url = link.url.clone();
 	let name = link.name.clone();
-	
+
 	let (link_style, styled) = match link.style {
 		Some(s) if !s.trim().is_empty() => (s, true),
 		_ => (String::new(), false)
@@ -170,11 +170,11 @@ pub fn LinkCard(link: LinkEntry) -> impl IntoView {
 	};
 	// no space allowed in class name
 	let cname = name.replace(" ", "");
-	let link_card_class = 
+	let link_card_class =
 		format!("w-full flex gap-2 at-link-card at-link-card-{cname}");
-	let link_class = 
+	let link_class =
 		format!("w-full flex gap-2 link link-hover at-link at-link-{cname}");
-	let img_class = 
+	let img_class =
 		format!("h-6 w-6 hover:scale-[108%] at-ico at-ico-{}", cname);
 
 	if styled {
@@ -183,7 +183,7 @@ pub fn LinkCard(link: LinkEntry) -> impl IntoView {
 				<a
 					class={link_class}
 					href={url.clone()}
-					title={name.clone()} 
+					title={name.clone()}
 					target="_blank"
 				>
 					<img
@@ -210,7 +210,7 @@ pub fn LinkCard(link: LinkEntry) -> impl IntoView {
 			<a
 				class={format!("link link-hover at-link at-link-{}", cname)}
 				href={url}
-				title={name.clone()} 
+				title={name.clone()}
 				target="_blank"
 			>
 				<img
@@ -256,22 +256,24 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 	view! {
 		<div class={format!("w-full p-2 at-card at-card-{}", kd)}>
 			<div class={format!("flex items-center justify-start gap-2 at-meta at-meta-{}", kd)}>
-				<img
-					class={format!("h-4 w-4 rounded at-ava at-ava-{}", kd)}
-					src={profile.get().avatar.clone().unwrap_or_default()}
-					loading="lazy"
-				/>
 				<a
 					href={format!("https://bsky.app/profile/{}", profile.get().handle.clone())}
 					target="_blank"
-					class={format!("link link-hover text-xs at-hdl at-hdl-{}", kd)}
+					class={format!("link link-hover flex items-center justify-start gap-1 at-handle at-handle-{}", kd)}
 				>
-					{
-						profile.get().displayName.clone().map(|n| {
-							if n.trim().is_empty() { profile.get().handle.clone() } else { n }
-						})
-						.unwrap_or_else(|| profile.get().handle.clone())
-					}
+  				<img
+  					class={format!("h-4 w-4 rounded at-ava at-ava-{}", kd)}
+  					src={profile.get().avatar.clone().unwrap_or_default()}
+  					loading="lazy"
+  				/>
+          <span class={format!("text-xs at-hdl at-hdl-{}", kd)}>
+  					{
+  						profile.get().displayName.clone().map(|n| {
+  							if n.trim().is_empty() { profile.get().handle.clone() } else { n }
+  						})
+  						.unwrap_or_else(|| profile.get().handle.clone())
+  					}
+					</span>
 			  </a>
 				<span class={format!("text-xs at-date at-date-{}", kd)}>
 					{ts_to_dt(rec.timestamp)}
@@ -285,7 +287,7 @@ pub fn RecCard(rec: AtRecord, profile: RwSignal<ProfileRes>) -> impl IntoView {
 				</a>
 				<a
 					class={format!("link link-hover text-xs at-filter at-filter-{}", kd)}
-					on:click=move |_| { 
+					on:click=move |_| {
 						let page_url = format!("?f={}", kd1);
 						_ = window().open_with_url_and_target(&page_url, "_self");
 					}
@@ -337,9 +339,9 @@ pub fn ProfileView(profile: ProfileRes) -> impl IntoView {
 					loading="lazy"
 				/>
 			</a>
-			<a 
-				class="link link-hover text-2xl at-handle" 
-				on:click=move |_| { 
+			<a
+				class="link link-hover text-2xl at-handle"
+				on:click=move |_| {
 					let page_url = format!("/{}", profile.handle);
 					_ = window().open_with_url_and_target(&page_url, "_self");
 				}
@@ -369,7 +371,7 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 				<div class="flex flex-col h-full overflow-y-auto no-scrollbar">
 					<div class="flex flex-col items-start justify-center gap-2">
 					  <button
-						  class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+						  class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
 	            on:click=move |_| {
 								let clipboard = window().navigator().clipboard();
@@ -379,9 +381,9 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							<Icon icon=COPY size="18px"/> " Copy"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
-							on:click=move |_| { 
+							on:click=move |_| {
 								let share_url = format!("https://bsky.app/intent/compose?text={}", txt.get());
 								_ = window().open_with_url(&share_url);
 							}
@@ -389,9 +391,9 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							<Icon icon=BUTTERFLY size="18px"/> " Bluesky"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
-							on:click=move |_| { 
+							on:click=move |_| {
 								let share_url = format!(
 									"https://www.linkedin.com/sharing/share-offsite/?url={}", txt.get()
 								);
@@ -401,9 +403,9 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							<Icon icon=LINKEDIN_LOGO size="18px"/> " LinkedIn"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
-							on:click=move |_| { 
+							on:click=move |_| {
 								let share_url = format!(
 									"https://www.facebook.com/sharer.php?u={}", txt.get()
 								);
@@ -413,9 +415,9 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							<Icon icon=FACEBOOK_LOGO size="18px"/> " Facebook"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
-							on:click=move |_| { 
+							on:click=move |_| {
 								let share_url = format!(
 									"https://www.threads.net/intent/post?text={}", txt.get()
 								);
@@ -425,9 +427,9 @@ pub fn ShareBtn(text: String) -> impl IntoView {
 							<Icon icon=THREADS_LOGO size="18px"/> " Threads"
 						</button>
 						<button
-							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex" 
+							class="btn btn-xs btn-ghost rounded-sm p-1 mx-1 flex"
 							style="color: #AE2983;"
-							on:click=move |_| { 
+							on:click=move |_| {
 								let share_url = format!(
 									"https://x.com/intent/tweet?text={}", txt.get()
 								);

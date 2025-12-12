@@ -543,12 +543,12 @@ pub fn LinkBox(
 
 pub const DEFAULT_STYLE: &str = "
 	body {
-		background-color: #fff8e3; 
+		background-color: #fff8e3;
 	}
 	.at-page {
 	  max-width: 520px;
 	}
-	.at-card {    
+	.at-card {
 		padding: 10px;
 		margin: 5px auto;
 		background: #dee9de;
@@ -557,6 +557,7 @@ pub const DEFAULT_STYLE: &str = "
 		box-sizing: border-box;
 	}
 	.at-hdl {
+	  display: none;
 		color: rgb(25, 137, 254);
 	}
 	.at-kind {
@@ -564,5 +565,5 @@ pub const DEFAULT_STYLE: &str = "
 	}
 ";
 
-pub const LINK_STYLE: &str = 
+pub const LINK_STYLE: &str =
   "padding: 10px 18px; background-color: blue; color: white; border-radius: 5%;";
