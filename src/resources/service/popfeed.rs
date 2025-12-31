@@ -255,6 +255,11 @@ pub async fn get_popfeed_records(
 		if let Ok(res) = serde_json::from_str::<ListItemsResp>(&lk_data) {
 			for rec in res.records {
 				let entry = rec.value;
+				let item_title = entry.title.unwrap_or_default();
+				// FIXME, any other way to get alternative title?
+				if item_title.trim().is_empty() {
+				  continue;
+				}
 
 				let sub_typ = entry.creativeWorkType;
 				let lst_uri = entry.listUri;
@@ -266,7 +271,6 @@ pub async fn get_popfeed_records(
 				};
 
 				let link = format!("https://popfeed.social/list/{}", lst_uri);
-				let item_title = entry.title.unwrap_or_default();
 				let item_img = entry.posterUrl.unwrap_or_default();
 				let images = if item_img.trim().is_empty() {
 					vec![]
