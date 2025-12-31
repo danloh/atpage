@@ -77,7 +77,7 @@ pub const AT_SERVICES: [(&str, &str, &str); 10] = [
 	("frontpage", "Link aggregator", "https://frontpage.fyi"),
 	("nooki", "Discussion platform", "https://nooki.me"),
 	("pinksea", "Oekaki BBS", "https://pinksea.art"),
-	("ruthub", "Tracker", "https://ruthub.com"),
+	("ruthub", "Kanban", "https://ruthub.com"),
 	("whitewind", "Blog", "https://whtwnd.com"),
 	("leaflet", "Publishing", "https://leaflet.pub"),
 	("popfeed", "Review", "https://popfeed.social"),
