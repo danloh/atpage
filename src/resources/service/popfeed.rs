@@ -1,4 +1,4 @@
-//! Review book, movie, ... 
+//! popfeed: Review book, movie, ...
 
 use serde::{Deserialize, Serialize};
 
@@ -23,7 +23,7 @@ pub struct ListItemResp {
 #[allow(non_snake_case)]
 pub struct ListItemValue {
 	#[serde(rename = "$type")] // social.popfeed.feed.listItem
-	pub typ: String, 
+	pub typ: String,
 	pub addedAt: String,
 	pub listUri: String, // at-uri
 	pub creativeWorkType: String,
@@ -56,7 +56,7 @@ pub struct ListResp {
 #[allow(non_snake_case)]
 pub struct ListValue {
 	#[serde(rename = "$type")] // social.popfeed.feed.list
-	pub typ: String, 
+	pub typ: String,
 	pub name: String,
 	pub createdAt: String,
 	pub listType: String,
@@ -82,7 +82,7 @@ pub struct LikeResp {
 #[allow(non_snake_case)]
 pub struct LikeValue {
 	#[serde(rename = "$type")] // social.popfeed.feed.like
-	pub typ: String, 
+	pub typ: String,
 	pub createdAt: String,
 	pub subjectUri: String, // at-uri
 	pub subjectType: String,
@@ -105,7 +105,7 @@ pub struct NoteResp {
 #[allow(non_snake_case)]
 pub struct NoteValue {
 	#[serde(rename = "$type")] // social.popfeed.feed.note
-	pub typ: String, 
+	pub typ: String,
 	pub title: String,
 	pub text: String,
 	pub posterUrl: String,
@@ -134,7 +134,7 @@ pub struct ReviewResp {
 #[allow(non_snake_case)]
 pub struct ReviewValue {
 	#[serde(rename = "$type")] // social.popfeed.feed.review
-	pub typ: String, 
+	pub typ: String,
 	pub title: String,
 	pub text: String,
 	pub containsSpoilers: bool,
@@ -156,7 +156,7 @@ pub async fn get_popfeed_records(
 	cursor: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
 	let mut at_records: Vec<AtRecord> = Vec::new();
-	// get reviews 
+	// get reviews
 	if let Ok(rw) = list_record("social.popfeed.feed.review", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<ReviewsResp>(&rw) {
 			for rec in res.records {
@@ -165,7 +165,7 @@ pub async fn get_popfeed_records(
 				let entry = rec.value;
 				let rating = entry.rating;
 				let stars = "⭐".repeat((rating / 2).min(5));
-				
+
 				let rec = AtRecord {
 					kind: String::from("popfeed"),
 					title: format!("Review: {} [{}] {}", entry.title, entry.creativeWorkType, stars),
@@ -179,7 +179,7 @@ pub async fn get_popfeed_records(
 		}
 	}
 
-	// get notes 
+	// get notes
 	if let Ok(n_data) = list_record("social.popfeed.feed.note", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<NotesResp>(&n_data) {
 			for rec in res.records {
@@ -200,18 +200,18 @@ pub async fn get_popfeed_records(
 		}
 	}
 
-	// get likes 
+	// get likes
 	if let Ok(lk_data) = list_record("social.popfeed.feed.like", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<LikesResp>(&lk_data) {
 			for rec in res.records {
 				let entry = rec.value;
-				
+
 				let sub_typ = entry.subjectType;
 				let sub_uri = entry.subjectUri;
 				let (s_did, s_col, s_rkey) = uri_parts(&sub_uri);
 				let s_serv = if did == s_did {
 					serv.to_string()
-				} else { 
+				} else {
 					resolve_did(&s_did).await.service
 				};
 
@@ -250,18 +250,18 @@ pub async fn get_popfeed_records(
 		}
 	}
 
-	// get listitems 
+	// get listitems
 	if let Ok(lk_data) = list_record("social.popfeed.feed.listItem", serv, did, cursor).await {
 		if let Ok(res) = serde_json::from_str::<ListItemsResp>(&lk_data) {
 			for rec in res.records {
 				let entry = rec.value;
-				
+
 				let sub_typ = entry.creativeWorkType;
 				let lst_uri = entry.listUri;
 				let (l_did, l_col, l_rkey) = uri_parts(&lst_uri);
 				let l_serv = if did == l_did {
 					serv.to_string()
-				} else { 
+				} else {
 					resolve_did(&l_did).await.service
 				};
 
@@ -274,7 +274,7 @@ pub async fn get_popfeed_records(
 					vec![item_img]
 				};
 
-				let (title, content) = 
+				let (title, content) =
 				  if let Some(lst) = get_list_record(&l_rkey, &l_did, &l_col, &l_serv).await {
 						(lst.name, lst.description)
 					} else {
@@ -283,7 +283,7 @@ pub async fn get_popfeed_records(
 
 				let rec = AtRecord {
 					kind: String::from("popfeed"),
-					title: format!("Add [{}] {} to list: {}", sub_typ, item_title, title),
+					title: format!("[{}: {}] to list: {}", sub_typ, item_title, title),
 					link,
 					content,
 					images,
@@ -302,7 +302,7 @@ async fn get_list_record(id: &str, did: &str, col: &str, serv: &str) -> Option<L
 		Ok(raw_data) => match serde_json::from_str::<ListResp>(&raw_data) {
 			Ok(data_res) => {
 				let data = data_res.value;
-				
+
 				return Some(data);
 			}
 			Err(_e) => {
@@ -320,7 +320,7 @@ async fn get_note_record(id: &str, did: &str, serv: &str) -> Option<NoteValue> {
 		Ok(raw_data) => match serde_json::from_str::<NoteResp>(&raw_data) {
 			Ok(data_res) => {
 				let data = data_res.value;
-				
+
 				return Some(data);
 			}
 			Err(_e) => {
@@ -338,7 +338,7 @@ async fn get_review_record(id: &str, did: &str, serv: &str) -> Option<ReviewValu
 		Ok(raw_data) => match serde_json::from_str::<ReviewResp>(&raw_data) {
 			Ok(data_res) => {
 				let data = data_res.value;
-				
+
 				return Some(data);
 			}
 			Err(_e) => {

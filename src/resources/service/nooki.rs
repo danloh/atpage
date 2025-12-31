@@ -1,4 +1,4 @@
-//! nooki.me: reddit-alternative 
+//! nooki.me: reddit-alternative
 
 use serde::{Deserialize, Serialize};
 
@@ -23,10 +23,10 @@ pub struct PostResp {
 #[allow(non_snake_case)]
 pub struct PostValue {
 	#[serde(rename = "$type")] // community.nooki.posts
-	pub typ: String, 
+	pub typ: String,
 	pub title: String,
-	pub content: String, 
-	pub createdAt: String, 
+	pub content: String,
+	pub createdAt: String,
 	pub communityUrl: String, // at-uri
 	pub communityName: String,
 }
@@ -48,8 +48,8 @@ pub struct CommentResp {
 #[allow(non_snake_case)]
 pub struct CommentValue {
 	#[serde(rename = "$type")] // community.nooki.comments
-	pub typ: String, 
-	pub content: String, 
+	pub typ: String,
+	pub content: String,
 	pub postUri: String, // at-uri
 	pub createdAt: String,
 	pub parentUri: String, // at-uri
@@ -72,7 +72,7 @@ pub struct UpvoteResp {
 #[allow(non_snake_case)]
 pub struct UpvoteValue {
 	#[serde(rename = "$type")] // community.nooki.upvotes
-	pub typ: String, 
+	pub typ: String,
 	pub postUri: String, // at-uri
 	pub createdAt: String,
 }
@@ -83,15 +83,17 @@ pub async fn get_nooki_records(
 	cursor: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
 	let mut at_records: Vec<AtRecord> = Vec::new();
-	// get posts 
+	// get posts
 	if let Ok(pst) = list_record("community.nooki.posts", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<PostsResp>(&pst) {
 			for rec in res.records {
 				let entry = rec.value;
 				let title = entry.title;
+				// FIXME: DONOT KNOW how the application slugify the title for URL,
+				// currently, it may work only for ascii-title
 				let title_slug = slug::slugify(&bleach_slug(&title));
 				let link = format!("https://nooki.me/post/{title_slug}");
-				
+
 				let rec = AtRecord {
 					kind: String::from("nooki"),
 					title,
@@ -105,7 +107,7 @@ pub async fn get_nooki_records(
 		}
 	}
 
-	// get comments 
+	// get comments
 	if let Ok(cmt_data) = list_record("community.nooki.comments", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<CommentsResp>(&cmt_data) {
 			for rec in res.records {
@@ -114,7 +116,7 @@ pub async fn get_nooki_records(
 				let (p_did, _p_col, p_rkey) = uri_parts(&post_uri);
 				let p_serv = if did == p_did {
 					serv.to_string()
-				} else { 
+				} else {
 					resolve_did(&p_did).await.service
 				};
 				let (title, link) = if let Some(pst) = get_post_record(&p_rkey, &p_did, &p_serv).await {
@@ -139,7 +141,7 @@ pub async fn get_nooki_records(
 		}
 	}
 
-	// get upvotes 
+	// get upvotes
 	if let Ok(up_data) = list_record("community.nooki.upvotes", serv, did, cursor.clone()).await {
 		if let Ok(res) = serde_json::from_str::<UpvotesResp>(&up_data) {
 			for rec in res.records {
@@ -148,7 +150,7 @@ pub async fn get_nooki_records(
 				let (p_did, _p_col, p_rkey) = uri_parts(&post_uri);
 				let p_serv = if did == p_did {
 					serv.to_string()
-				} else { 
+				} else {
 					resolve_did(&p_did).await.service
 				};
 				let (title, link, content) = if let Some(pst) = get_post_record(&p_rkey, &p_did, &p_serv).await {
@@ -181,7 +183,7 @@ async fn get_post_record(id: &str, did: &str, serv: &str) -> Option<PostValue> {
 		Ok(raw_data) => match serde_json::from_str::<PostResp>(&raw_data) {
 			Ok(data_res) => {
 				let data = data_res.value;
-				
+
 				return Some(data);
 			}
 			Err(_e) => {
@@ -195,6 +197,6 @@ async fn get_post_record(id: &str, did: &str, serv: &str) -> Option<PostValue> {
 }
 
 fn bleach_slug(s: &str) -> String {
-	// FIXME: filter out emoji, punctuation 
+	// FIXME: filter out emoji, punctuation
 	s.replace("-", " ").chars().filter(|c| c.is_ascii() && !c.is_ascii_punctuation()).collect()
 }
