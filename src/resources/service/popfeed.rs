@@ -59,8 +59,8 @@ pub struct ListValue {
 	pub typ: String,
 	pub name: String,
 	pub createdAt: String,
-	pub listType: String,
-	pub description: String,
+	pub listType: Option<String>,
+	pub description: Option<String>,
 	// pub ordered: Option<bool>,
 	// pub authorDid: Option<String>,
 }
@@ -217,7 +217,7 @@ pub async fn get_popfeed_records(
 
 				let (title, content, link) = if sub_typ == "list" {
 					if let Some(lst) = get_list_record(&s_rkey, &s_did, &s_col, &s_serv).await {
-						(lst.name, lst.description, format!("https://popfeed.social/list/{}", sub_uri))
+						(lst.name, lst.description.unwrap_or_default(), format!("https://popfeed.social/list/{}", sub_uri))
 					} else {
 						continue;
 					}
@@ -276,14 +276,14 @@ pub async fn get_popfeed_records(
 
 				let (title, content) =
 				  if let Some(lst) = get_list_record(&l_rkey, &l_did, &l_col, &l_serv).await {
-						(lst.name, lst.description)
+						(lst.name, lst.description.unwrap_or_default())
 					} else {
 						continue;
 					};
 
 				let rec = AtRecord {
 					kind: String::from("popfeed"),
-					title: format!("[{}: {}] to list: {}", sub_typ, item_title, title),
+					title: format!("{} [{}] to list: {}", item_title, sub_typ, title),
 					link,
 					content,
 					images,
