@@ -42,7 +42,7 @@ pub async fn get_leaflet_records(
 	serv: &str,
 	cur: Option<String>,
 ) -> (Vec<AtRecord>, Option<String>) {
-	match list_record("pub.leaflet.document", serv, &did, cur).await {
+	match list_record("site.standard.document", serv, &did, cur).await {
 		Ok(raw_data) => match serde_json::from_str::<LeafListResp>(&raw_data) {
 			Ok(data_res) => {
 				let cursor = data_res.cursor;
@@ -123,7 +123,7 @@ pub struct PublicationValue {
 }
 
 async fn get_publication_record(id: &str, did: &str, serv: &str) -> Option<PublicationValue> {
-	match get_record("pub.leaflet.publication", id, &serv, did).await {
+	match get_record("site.standard.publication", id, &serv, did).await {
 		Ok(raw_data) => match serde_json::from_str::<PublicationResp>(&raw_data) {
 			Ok(data_res) => {
 				let data = data_res.value;
