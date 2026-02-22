@@ -5,10 +5,10 @@
     "description": "",
     "devDependencies": {
         "@tailwindcss/typography": "0.5.19",
-        "daisyui": "5.5.4",
-        "tailwindcss": "4.1.17",
-        "@tailwindcss/cli": "4.1.17"
+        "daisyui": "5.5.19",
+        "tailwindcss": "4.2.0",
+        "@tailwindcss/cli": "4.2.0"
     },
     "dependencies": {},
-    "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
+    "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }
