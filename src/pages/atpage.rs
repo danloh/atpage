@@ -8,7 +8,7 @@ use phosphor_leptos::{
 };
 
 use crate::helper::md::md2html;
-use crate::helper::utils::{get_ico, ts_to_dt};
+use crate::helper::utils::{get_ico, get_service_icon, ts_to_dt};
 use crate::pages::home::DEFAULT_STYLE;
 use crate::resources::atpage::{fetch_atpage, fetch_records, links_to_map, AtRecord, LinkEntry};
 use crate::resources::auth::{get_profile, ProfileRes};
@@ -111,16 +111,23 @@ pub fn AtView(profile: ProfileRes, filter: String) -> impl IntoView {
 						            .collect_view()
 											}
 										</div>
-										<AtBox
-											did=p_signal.get().did
-											services=res
-											  .services
-											  .clone()
-											  .into_iter()
+
+										{
+											let selected_services = res.services;
+											let filtered_services: Vec<String> = selected_services
+												.clone()
+												.into_iter()
 												.filter(|s| filter.trim().is_empty() || s == filter.trim())
-												.collect()
-											profile=p_signal
-										/>
+												.collect();
+											view! {
+												<ServiceIconsBar services=selected_services />
+												<AtBox
+													did=p_signal.get().did
+													services=filtered_services
+													profile=p_signal
+												/>
+											}
+										}
 									</div>
 									<div class="w-full flex flex-wrap items-center justify-center my-4 at-btm">
 										<a href="/setup" class="link link-hover at-join">
@@ -223,6 +230,44 @@ pub fn LinkCard(link: LinkEntry) -> impl IntoView {
 		}
 		.into_any()
 	}
+}
+
+#[component]
+pub fn ServiceIconsBar(services: Vec<String>) -> impl IntoView {
+	if services.is_empty() {
+		return None.into_view();
+	}
+
+	Some(
+		view! {
+			<div class="w-full flex flex-wrap items-center justify-center gap-3 p-2 at-services-bar">
+				{services
+					.into_iter()
+					.map(|service| {
+						let href = format!("?f={}", service);
+						let icon_url = get_service_icon(&service);
+						let class = format!("flex items-center justify-center h-8 w-8 hover:scale-110 transition-transform cursor-pointer at-service-icon at-service-{}", service);
+						view! {
+							<a
+								title={service}
+								class={class}
+								on:click=move |_| {
+									_ = window().open_with_url_and_target(&href, "_self");
+								}
+							>
+								<img
+									src={icon_url}
+									class="h-full w-full rounded"
+									loading="lazy"
+								/>
+							</a>
+						}
+					})
+					.collect_view()
+				}
+			</div>
+		}
+	).into_view()
 }
 
 #[component]

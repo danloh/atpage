@@ -41,3 +41,20 @@ pub fn get_ico(uri: &str) -> String {
 	let hostname = get_host(uri);
 	format!("https://icons.duckduckgo.com/ip3/{hostname}.ico")
 }
+
+/// get icon URL for a service
+pub fn get_service_icon(service: &str) -> String {
+	match service.to_lowercase().as_str() {
+		"frontpage" => "https://frontpage.fyi/frontpage-logo.svg".to_string(),
+		"nooki" => "https://icons.duckduckgo.com/ip3/nooki.me.ico".to_string(),
+		"pinksea" => "https://icons.duckduckgo.com/ip3/pinksea.art.ico".to_string(),
+		"ruthub" => "https://ruthub.com/favicon.svg".to_string(),
+		"smokesignal" => "https://icons.duckduckgo.com/ip3/smokesignal.events.ico".to_string(),
+		// "grain" => "https://icons.duckduckgo.com/ip3/grain.social.ico".to_string(),
+		"recipe" => "https://icons.duckduckgo.com/ip3/recipe.exchange.ico".to_string(),
+		"leaflet" => "https://icons.duckduckgo.com/ip3/leaflet.pub.ico".to_string(),
+		"popfeed" => "https://icons.duckduckgo.com/ip3/popfeed.social.ico".to_string(),
+		"whitewind" => "https://icons.duckduckgo.com/ip3/whtwnd.com.ico".to_string(),
+		_ => format!("https://ui-avatars.com/api/?name={}&background=random&color=fff", service),
+	}
+}
