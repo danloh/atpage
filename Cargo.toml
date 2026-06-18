@@ -21,8 +21,8 @@ leptos_router = "0.8.13"
 leptos-use = "0.18.3"
 phosphor-leptos = "0.8.0"
 
-itertools = "0.14.0"
-chrono = "0.4.44"
+itertools = "0.15.0"
+chrono = "0.4.45"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
 futures = "0.3.32"
