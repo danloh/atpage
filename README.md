@@ -17,7 +17,6 @@ Links and footprints on ATProto into one customizable page.
 - leaflet: https://leaflet.pub  
 - whitewind: https://whtwnd.com
 - pinksea: https://pinksea.art 
-- ruthub: https://ruthub.com 
 - recipe exchange: https://recipe.exchange 
 - smokesignal: https://smokesignal.events 
 - grain: https://grain.social 
